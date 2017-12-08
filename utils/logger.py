@@ -12,9 +12,12 @@ def initLogging(path=logConfigFile):
     initBasicLogging()
 
 def initLoggingFromFile(path=logConfigFile):
-  with open(path, 'r') as f:
-    config = json.load(f)
-  logging.config.dictConfig(config)
+  try:
+    with open(path, 'r') as f:
+      config = json.load(f)
+    logging.config.dictConfig(config)
+  except (IOError, OSError):
+    initBasicLogging()
 
 def initBasicLogging():
   logging.basicConfig()
