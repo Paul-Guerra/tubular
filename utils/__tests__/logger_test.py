@@ -38,10 +38,10 @@ def test_initLoggingFromFile(mock_json_load, mock_dictConfig):
     mock_dictConfig.assert_called_once_with(jsonLoadResult)
 
 def oserr(e): 
-  raise OSError('OS oops')
+  raise OSError
 
 def ioerr(e): 
-  raise IOError('IO oops')
+  raise IOError
 
 @patch('utils.logger.initBasicLogging')
 @patch('logging.config.dictConfig', side_effect=ioerr)
