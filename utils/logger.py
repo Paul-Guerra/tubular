@@ -7,8 +7,14 @@ logConfigFile = 'utils/logger.json'
 
 def initLogging(path=logConfigFile):
   if os.path.exists(path):
-    with open(path, 'r') as f:
-      config = json.load(f)
-    logging.config.dictConfig(config)
+    initLoggingFromFile(path)
   else:
-    logging.basicConfig()
+    initBasicLogging()
+
+def initLoggingFromFile(path=logConfigFile):
+  with open(path, 'r') as f:
+    config = json.load(f)
+  logging.config.dictConfig(config)
+
+def initBasicLogging():
+  logging.basicConfig()
