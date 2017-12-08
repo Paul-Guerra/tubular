@@ -1,0 +1,17 @@
+{
+  "youtube": {
+    "url_base": "https://www.youtube.com/feeds/videos.xml?user="
+  },
+  "podcasts":[
+    {
+      "title": "Sample",
+      "youtube_user": "user_name"
+    },
+    {
+      "title": "Not Logan",
+      "youtube_user": "StrayFromTheMorale"
+    }
+  
+  ]
+
+}
