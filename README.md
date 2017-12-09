@@ -10,7 +10,6 @@ python -m venv .python_environment
 source .python_environment/bin/activate
 ````
 
-
 ### Install modules
 ````bash
 pip install requests
