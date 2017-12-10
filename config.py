@@ -2,7 +2,7 @@ import os
 import json
 import logging
 
-app_config_path = '_config.json'
+app_config_path = 'config.json'
 logger = logging.getLogger('tubular')
 
 def load():
