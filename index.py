@@ -1,7 +1,8 @@
 import platform
 import logging
-from utils.logger import initLogging
 import config
+from utils.logger import initLogging
+from youtube import get_user_urls
 
 initLogging()
 logger = logging.getLogger("tubular")
@@ -11,4 +12,5 @@ logger.info("Starting Tubular")
 logger.debug("Running on Python {}".format(platform.python_version()))
 logger.debug("Log level set to {}".format(logger.level))
 config = config.load()
-print(config['youtube']['url_base'])
+# print(config['youtube']['url_base'])
+print(get_user_urls(config))
