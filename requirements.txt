@@ -4,3 +4,4 @@ coverage==4.4.2
 idna==2.6
 requests==2.18.4
 urllib3==1.22
+youtube-dl==2017.12.10
