@@ -1,5 +1,4 @@
 import unittest
- 
 import os
 import logging
 import utils.logger
@@ -66,7 +65,7 @@ class TestLogger(unittest.TestCase):
       mock_basicLogging.assert_called_once_with()
 
   @patch('utils.logger.initBasicLogging')
-  @patch('logging.config.dictConfig', side_effect=ioerr)
+  @patch('logging.config.dictConfig', side_effect=oserr)
   @patch('json.load', return_value=jsonLoadResult)
   def test_catchOSError(self, mock_json_load, mock_dictConfig, mock_basicLogging):
     '''Calls basic logger if there is an OS exception'''
@@ -75,5 +74,5 @@ class TestLogger(unittest.TestCase):
       utils.logger.initLoggingFromFile('path/to/file')
       mock_basicLogging.assert_called_once_with()
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
