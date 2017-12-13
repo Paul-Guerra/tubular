@@ -18,3 +18,13 @@ def fetch(url):
   except Exception:
     logger.exception('Error fetching response: {}'.format(url))
 
+
+def manifest(config):
+  if config is None:
+    return False
+  items = []
+  for chan in config['channels']:
+    items.append('{}{}'.format(config['youtube']['user_url'], chan['user']))
+
+  return items
+
