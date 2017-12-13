@@ -59,4 +59,5 @@ class Downloader(object):
       ydl.download(urls)
 
 def onUpdate(u):
-  logger.info('{}: {}'.format(u['status'], u))
+  if u['status'] is 'finished':
+    logger.info('{}: {}'.format(u['status'], u))
