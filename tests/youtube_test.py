@@ -5,33 +5,33 @@ from unittest.mock import patch, Mock
 
 class TestYouTube(unittest.TestCase):
   def test_noneAsConfig(self):
-    '''YouTube::get_user_urls returns False if config is None'''
+    '''youtube::get_user_urls returns False if config is None'''
     print(self.shortDescription())
-    output = youtube.get_user_urls(None)    
+    output = youtube.crawl(None)    
     self.assertEqual(output, False)
 
   def test_urlIsNone(self):
-    '''YouTube::get_user_urls returns False if youtube.user_url is None'''
+    '''youtube::get_user_urls returns False if youtube.user_url is None'''
     print(self.shortDescription())
     badConfig = {'youtube': {'foo': True}}
-    output = youtube.get_user_urls(badConfig)    
+    output = youtube.crawl(badConfig)    
     self.assertEqual(output, False)
   
   def test_urlsList(self):
-    '''YouTube::get_user_urls returns a list of urls'''
+    '''youtube::get_user_urls returns a list of urls'''
     print(self.shortDescription())
     config = {
       'youtube': {'user_url': 'foo'},
       'channels': [{'user': 'bar'}]
       }
 
-    output = youtube.get_user_urls(config)    
+    output = youtube.crawl(config)    
     self.assertEqual(type(output), list)
     self.assertEqual(output[0], 'foobar')
   
   @patch('requests.get')
   def test_fetchURL(self, mock_get):
-    '''YouTube::fetch makes request to URL'''
+    '''youtube::fetch makes request to URL'''
     print(self.shortDescription())
 
     data = youtube.fetch('foo')
@@ -40,7 +40,7 @@ class TestYouTube(unittest.TestCase):
 
   @patch('requests.get')
   def test_fetchReturnsResponse(self, mock_get):
-    '''YouTube::fetch returns response from request'''
+    '''youtube::fetch returns response from request'''
     print(self.shortDescription())
 
     response = Mock()
@@ -51,11 +51,11 @@ class TestYouTube(unittest.TestCase):
   @patch('youtube.map')
   @patch('youtube.fetch')
   def test_fetch_urls_maps(self, mock_fetch, mock_map):
-    '''YouTube::fetch_url maps over the URLs'''
+    '''youtube::fetch_url maps over the URLs'''
     print(self.shortDescription())
 
     urls = ['foo']
-    youtube.fetch_urls(urls)
+    youtube.crawl(urls)
     mock_map.assert_called_with(mock_fetch, urls)
 
 # if __name__ == '__main__':

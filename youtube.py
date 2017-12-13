@@ -1,24 +1,20 @@
-import requests
 import logging
-
+import requests
+from crawl_response import CrawlResponse
 logger = logging.getLogger('tubular')
 
-def get_user_urls(config):
-  if config is None:
-    return False
+def crawl(manifest):
+  return list(filter(lambda r: r is not None, map(fetch, manifest)))
 
-  if 'user_url' not in config['youtube']:
-    return False
-
-  urls = []
-  for chan in config['channels']:
-    urls.append('{}{}'.format(config['youtube']['user_url'], chan['user']))
-  
-  return urls
-
-def fetch_urls(urls):
-  return map(fetch, urls)
 
 def fetch(url):
-  logger.info('Making request to {}'.format(url))
-  return requests.get(url, timeout=5)
+  try:
+    logger.info('Making request to {}'.format(url))
+    response = requests.get(url, timeout=5)
+    if response.status_code is not 200:
+      logger.warn('Received non 200 response code for {}. Status Code:{}'.format(url, response.status_code))
+      return None
+    return CrawlResponse(response)
+  except Exception:
+    logger.exception('Error fetching response: {}'.format(url))
+
