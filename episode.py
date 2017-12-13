@@ -26,3 +26,7 @@ class Episode(object):
   @property
   def thumbnail(self):
     return self.__entry['media:group']['media:thumbnail']['@url']
+
+  @property
+  def id(self):
+    return self.__entry['yt:videoId']
