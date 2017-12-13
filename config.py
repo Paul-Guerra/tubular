@@ -1,17 +1,13 @@
 import os
 import json
 import logging
-
-app_config_path = 'config.json'
+from utils.files import open_json_as_dict
 logger = logging.getLogger('tubular')
 
 def load():
   try:
-    if os.path.exists(app_config_path):
-      with open(app_config_path, 'r') as f:
-        return json.load(f)
-    else:
-      raise Exception('App config not found')
+    return open_json_as_dict('config.json')
   except Exception as e:
     logger.critical('Error loading app config: {}'.format(str(e)))
     exit()
+
