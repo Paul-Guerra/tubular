@@ -14,7 +14,7 @@
 		},
 		"logfile": {
 			"class": "logging.handlers.RotatingFileHandler",
-			"level": "WARN",
+			"level": "INFO",
 			"formatter": "simple",
 			"filename": "tubular.log",
 			"maxBytes": 10485760,
@@ -24,7 +24,7 @@
 	},
 	"loggers": {
 		"tubular": {
-			"level": "DEBUG",
+			"level": "INFO",
 			"handlers": [
 				"logfile"
 			],
