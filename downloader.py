@@ -50,16 +50,7 @@ class Downloader(object):
       write_dict_as_json({'ids': ids}, self._last_run_path)
     except Exception as e:
       logger.error('Could not write {}'.format(self._last_run_path))
-  
-  def _get_new_episodes(self, show):
-    try:
-      last_run_ids = set(open_json_as_dict(self._last_run_path)['ids'])
-      episode_ids = set(show.episode_ids)
-      new_episodes = episode_ids - last_run_ids
-      return show.get_episodes_by_id(list(new_episodes))
-    except Exception as e:
-      logger.warn('Could not determine new episodes: Error: {}', e)
-  
+    
   def _empty_temp_dir(self):
     logger.info('Emptying {}'.format(self._temp_dir))
     try:
@@ -70,12 +61,16 @@ class Downloader(object):
       logger.warn('Cannot empty {}. Error: {}'.format(self._temp_dir, e))
 
   def _download_episodes(self, show):
-    episodes = self._get_new_episodes(show)
-    urls = list(map(lambda e: e.web_page, episodes))
-    with youtube_dl.YoutubeDL(self.download_options) as ydl:
-      logger.info('Initiating download for urls {}'.format(urls))
-      ydl.download(urls)
-    logger.info('Downloads complete')
+    try:
+      last_run_ids = set(open_json_as_dict(self._last_run_path)['ids'])
+      episodes = show.get_new_episodes(last_run_ids)
+      urls = list(map(lambda e: e.web_page, episodes))
+      with youtube_dl.YoutubeDL(self.download_options) as ydl:
+        logger.info('Initiating download for urls {}'.format(urls))
+        ydl.download(urls)
+      logger.info('Downloads complete')
+    except Exception as e:
+      logger.exception('Could not download {}: Error: {}'.format(urls, e))
 
 def _ids_from_tmp_dir(folder):
   try:

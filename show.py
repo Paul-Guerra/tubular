@@ -34,8 +34,7 @@ class Show(object):
       ids
     ))
 
-  # def get_new_episodes(self, previous_episode_ids):
-  #   # last_run_ids = set(open_json_as_dict(self._last_run_path)['ids'])
-  #   episode_ids = set(self.episode_ids)
-  #   new_episodes = episode_ids - previous_episode_ids
-  #   return self.get_episodes_by_id(list(new_episodes))
+  def get_new_episodes(self, previous_episode_ids):
+    episode_ids = set(self.episode_ids)
+    new_episodes = episode_ids - previous_episode_ids
+    return self.get_episodes_by_id(list(new_episodes))
