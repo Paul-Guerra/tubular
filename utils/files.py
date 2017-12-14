@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import ntpath
 
 logger = logging.getLogger('tubular')
 
@@ -17,3 +18,10 @@ def open_json_as_dict(path=''):
 def write_dict_as_json(obj, path):
   with open(path, 'w') as fp:
     json.dump(obj, fp)
+
+def touch(path):
+  dirname = ntpath.dirname(path)
+  if not os.path.exists(path):
+    if len(dirname) > 0:
+      os.makedirs(ntpath.dirname(path))
+    open(path, 'w').close()

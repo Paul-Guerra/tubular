@@ -35,6 +35,7 @@ class Show(object):
     ))
 
   def get_new_episodes(self, previous_episode_ids):
+    previous_ids = set(previous_episode_ids)
     episode_ids = set(self.episode_ids)
-    new_episodes = episode_ids - previous_episode_ids
+    new_episodes = episode_ids - previous_ids
     return self.get_episodes_by_id(list(new_episodes))
