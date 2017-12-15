@@ -22,6 +22,13 @@ class Show(object):
     return self.__episodes
 
   @property
+  def downloaded_episodes(self):
+    return filter(
+      lambda e: e.downloaded is True
+      self.__episodes
+    )
+
+  @property
   def episodes_by_id(self):
     return self.__episodes_by_id
 

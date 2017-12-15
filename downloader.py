@@ -56,7 +56,8 @@ class Downloader(object):
   
   def __write_last_run(self, ids):
     try:
-      write_dict_as_json({'ids': ids}, self.__last_run_path)
+      # write_dict_as_json({'ids': ids}, self.__last_run_path)
+      write_dict_as_json({'ids': []}, self.__last_run_path)
     except Exception as e:
       logger.error('Could not write {}'.format(self.__last_run_path))
 
