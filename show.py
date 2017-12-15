@@ -1,7 +1,8 @@
 class Show(object):
 
-  def __init__(self, title='Default Title', episodes=[]):
+  def __init__(self, id, title='Default Title', episodes=[]):
     self.title = title
+    self.__id = id
     self.__episodes = episodes
     self.__episodes_by_id = {}
     self.__index_episodes(episodes)

@@ -7,8 +7,8 @@ logger = logging.getLogger('tubular')
 
 class Downloader(object):
 
-  def __init__(self, subscriptions):
-    self.subscriptions = subscriptions
+  def __init__(self, available_shows):
+    self.available_shows = available_shows
     self.__last_run_path = 'last_run.json'
     self.__temp_dir = 'tmp/'
     self.__downloaded_ids = []
@@ -33,7 +33,7 @@ class Downloader(object):
 
   def run(self):
     self.__empty_temp_dir()
-    for show in self.subscriptions.shows:
+    for show in self.available_shows:
       self.__download_episodes(show)
       self.__downloaded_ids += _ids_from_tmp_dir(self.__temp_dir)
     self.__write_last_run(self.__downloaded_ids)
@@ -41,6 +41,7 @@ class Downloader(object):
   @property
   def download_options(self):
     return {
+      'simulate': True,
       'nocheckcertificate': True,
       'keepvideo': False,
       'outtmpl': '{dir}/%(id)s.%(ext)s'.format(dir=self.__temp_dir),
@@ -58,15 +59,6 @@ class Downloader(object):
       write_dict_as_json({'ids': ids}, self.__last_run_path)
     except Exception as e:
       logger.error('Could not write {}'.format(self.__last_run_path))
-    
-  def __empty_temp_dir(self):
-    logger.info('Emptying {}'.format(self.__temp_dir))
-    try:
-      fileList = os.listdir(self.__temp_dir)
-      for fileName in fileList:
-        os.remove(self.__temp_dir + '/' + fileName)
-    except OSError as e:
-      logger.warn('Cannot empty {}. Error: {}'.format(self.__temp_dir, e))
 
   def __download_episodes(self, show):
     try:
@@ -82,6 +74,15 @@ class Downloader(object):
       logger.exception('Could not download {}: Error: {}'.format(urls, e))
     
     return []
+    
+  def __empty_temp_dir(self):
+    logger.info('Emptying {}'.format(self.__temp_dir))
+    try:
+      fileList = os.listdir(self.__temp_dir)
+      for fileName in fileList:
+        os.remove(self.__temp_dir + '/' + fileName)
+    except OSError as e:
+      logger.warn('Cannot empty {}. Error: {}'.format(self.__temp_dir, e))
 
   def __episode_tmp_path(self, episode):
     return '{dir}/{name}.mp3'.format(dir=self.__temp_dir, name=episode.id)
