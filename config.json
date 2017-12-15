@@ -8,10 +8,14 @@
       "user": "user_name"
     },
     {
-      "title": "Faction Radio",
-      "user": "StrayFromTheMorale"
+      "title": "The Jim and Sam Show",
+      "user": "StrayFromTheMorale",
+      "include": [
+        "Jim & Sam",
+        "Jim &amp; Sam",
+        "Jim and Sam"
+      ]
     }
-  
   ]
 
 }
