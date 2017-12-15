@@ -21,6 +21,10 @@ class CrawlResponse(object):
     return self.__xml
 
   @property
+  def id(self):
+    return self.__xml['feed']['yt:channelId']
+
+  @property
   def title(self):
     return self.__xml['feed']['title'] or 'Default title'
 
