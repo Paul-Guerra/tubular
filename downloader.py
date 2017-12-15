@@ -9,13 +9,13 @@ class Downloader(object):
 
   def __init__(self, subscriptions):
     self.subscriptions = subscriptions
-    self._last_run_path = 'last_run.json'
-    self._temp_dir = 'tmp/'
-    self._downloaded_ids = []
+    self.__last_run_path = 'last_run.json'
+    self.__temp_dir = 'tmp/'
+    self.__downloaded_ids = []
     self.init_dl_tracking()
     try:
-      if not os.path.exists(self._temp_dir):
-        os.makedirs(self._temp_dir)
+      if not os.path.exists(self.__temp_dir):
+        os.makedirs(self.__temp_dir)
     except Exception as e:
       logger.exception(str(e))
       exit()
@@ -23,63 +23,73 @@ class Downloader(object):
   def init_dl_tracking(self):
     default_dls = {'ids': []}
     try:
-      if not os.path.exists(self._last_run_path):
-        touch(self._last_run_path)
-        write_dict_as_json(default_dls, self._last_run_path)
+      if not os.path.exists(self.__last_run_path):
+        touch(self.__last_run_path)
+        write_dict_as_json(default_dls, self.__last_run_path)
       else:
-        self._downloaded_ids = open_json_as_dict(self._last_run_path)['ids']
+        self.__downloaded_ids = open_json_as_dict(self.__last_run_path)['ids']
     except Exception as e:
       logger.exception(str(e))
 
   def run(self):
-    self._empty_temp_dir()
+    self.__empty_temp_dir()
     for show in self.subscriptions.shows:
-      self._download_episodes(show)
-      self._downloaded_ids += _ids_from_tmp_dir(self._temp_dir)
-    self._write_last_run(self._downloaded_ids)
+      self.__download_episodes(show)
+      self.__downloaded_ids += _ids_from_tmp_dir(self.__temp_dir)
+    self.__write_last_run(self.__downloaded_ids)
   
   @property
   def download_options(self):
     return {
       'nocheckcertificate': True,
       'keepvideo': False,
-      'outtmpl': 'tmp/%(id)s.%(ext)s',
+      'outtmpl': '{dir}/%(id)s.%(ext)s'.format(dir=self.__temp_dir),
       'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
         'preferredquality': '128',
       }],
       'logger': logger,
-      'progress_hooks': [_onUpdate]
+      'progress_hooks': [on_download_update]
     }
   
-  def _write_last_run(self, ids):
+  def __write_last_run(self, ids):
     try:
-      write_dict_as_json({'ids': ids}, self._last_run_path)
+      write_dict_as_json({'ids': ids}, self.__last_run_path)
     except Exception as e:
-      logger.error('Could not write {}'.format(self._last_run_path))
+      logger.error('Could not write {}'.format(self.__last_run_path))
     
-  def _empty_temp_dir(self):
-    logger.info('Emptying {}'.format(self._temp_dir))
+  def __empty_temp_dir(self):
+    logger.info('Emptying {}'.format(self.__temp_dir))
     try:
-      fileList = os.listdir(self._temp_dir)
+      fileList = os.listdir(self.__temp_dir)
       for fileName in fileList:
-        os.remove(self._temp_dir + '/' + fileName)
+        os.remove(self.__temp_dir + '/' + fileName)
     except OSError as e:
-      logger.warn('Cannot empty {}. Error: {}'.format(self._temp_dir, e))
+      logger.warn('Cannot empty {}. Error: {}'.format(self.__temp_dir, e))
 
-  def _download_episodes(self, show):
+  def __download_episodes(self, show):
     try:
-      episodes = show.get_new_episodes(self._downloaded_ids)
+      episodes = show.get_new_episodes(self.__downloaded_ids)
       urls = list(map(lambda e: e.web_page, episodes))
       with youtube_dl.YoutubeDL(self.download_options) as ydl:
         logger.info('Initiating download for urls {}'.format(urls))
         ydl.download(urls)
       logger.info('Downloads complete')
+      self.__mark_episodes_downloaded(episodes)
       return episodes
     except Exception as e:
       logger.exception('Could not download {}: Error: {}'.format(urls, e))
+    
     return []
+
+  def __episode_tmp_path(self, episode):
+    return '{dir}/{name}.mp3'.format(dir=self.__temp_dir, name=episode.id)
+
+  def __mark_episodes_downloaded(self, episodes):
+    for e in episodes:
+      e.downloaded = True
+      e.tmp_path = self.__episode_tmp_path(e)
 
 def _ids_from_tmp_dir(folder):
   try:
@@ -96,6 +106,6 @@ def _get_id_from_path(path=''):
     return
   return ntpath.basename(path).split('.')[0]
 
-def _onUpdate(u):
+def on_download_update(u):
   if u['status'] is 'finished':
     logger.info('download {}: {}'.format(u['status'], u))

@@ -2,6 +2,9 @@ class Episode(object):
 
   def __init__(self, entry):
     self.__entry = entry
+    self.downloaded = False
+    self.uploaded = False
+    self.tmp_path = None
 
   @property
   def entry(self):
