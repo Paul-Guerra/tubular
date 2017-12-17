@@ -1,3 +1,5 @@
+from episode import Episode, parse_entry
+
 class Show(object):
 
   def __init__(self, id, title='Default Title', episodes=[]):
@@ -65,3 +67,28 @@ def open_show_from_file(path):
 
 def get_archived_shows():
   return
+
+
+def feeds_to_shows(feeds):
+  return list(map(
+    lambda f: Show(f.id, f.title, get_episodes_from_entries(f)),
+    feeds
+  ))
+
+def get_episodes_from_entries(feed_response):
+  entries = list(map(parse_entry, feed_response.entries))
+  episodes = list(map(Episode, entries))
+  includes = list(map(
+    lambda i: i.lower(),
+    feed_response.manifest_item.include
+    ))
+  return filter(
+    lambda e: title_is_included(e.title.lower(), includes),
+    episodes
+  )
+
+def title_is_included(title, includes):
+  for i in includes:
+    if i in title:
+      return True 
+  return False

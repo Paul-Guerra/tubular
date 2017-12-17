@@ -2,36 +2,17 @@ import platform
 import logging
 import config
 import youtube
-from show import Show, open_show_from_file, get_archived_shows
+from show import (
+  Show,
+  feeds_to_shows,
+  open_show_from_file, 
+  get_archived_shows
+  )
 from episode import Episode, parse_entry
 from downloader import Downloader
 from uploader import Uploader
 from utils.logger import initLogging
 import utils.files as uf
-
-def feeds_to_shows(feeds):
-  return list(map(
-    lambda f: Show(f.id, f.title, get_episodes_from_entries(f)),
-    feeds
-  ))
-
-def get_episodes_from_entries(feed_response):
-  entries = list(map(parse_entry, feed_response.entries))
-  episodes = list(map(Episode, entries))
-  includes = list(map(
-    lambda i: i.lower(),
-    feed_response.manifest_item.include
-    ))
-  return filter(
-    lambda e: title_is_included(e.title.lower(), includes),
-    episodes
-  )
-
-def title_is_included(title, includes):
-  for i in includes:
-    if i in title:
-      return True 
-  return False
 
 initLogging()
 logger = logging.getLogger('tubular')
