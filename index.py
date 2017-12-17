@@ -3,7 +3,7 @@ import logging
 import config
 import youtube
 from show import Show, open_show_from_file, get_archived_shows
-from episode import Episode
+from episode import Episode, parse_entry
 from downloader import Downloader
 from uploader import Uploader
 from utils.logger import initLogging
@@ -16,7 +16,8 @@ def feeds_to_shows(feeds):
   ))
 
 def get_episodes_from_entries(feed_response):
-  episodes = list(map(Episode, feed_response.entries))
+  entries = list(map(parse_entry, feed_response.entries))
+  episodes = list(map(Episode, entries))
   includes = list(map(
     lambda i: i.lower(),
     feed_response.manifest_item.include
