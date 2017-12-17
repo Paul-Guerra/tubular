@@ -21,7 +21,10 @@ def write_dict_as_json(obj, path):
 
 def touch(path):
   dirname = ntpath.dirname(path)
+  file_name = ntpath.basename(path)
   if not os.path.exists(path):
     if len(dirname) > 0:
-      os.makedirs(ntpath.dirname(path))
-    open(path, 'w').close()
+      os.makedirs(dirname)
+      
+    if len(file_name) > 0:
+      open(path, 'w').close()
