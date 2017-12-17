@@ -24,7 +24,7 @@ class Show(object):
   @property
   def downloaded_episodes(self):
     return filter(
-      lambda e: e.downloaded is True
+      lambda e: e.downloaded is True,
       self.__episodes
     )
 
