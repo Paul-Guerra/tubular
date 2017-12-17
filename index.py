@@ -2,11 +2,12 @@ import platform
 import logging
 import config
 import youtube
-from show import Show
+from show import Show, open_show_from_file, get_archived_shows
 from episode import Episode
 from downloader import Downloader
 from uploader import Uploader
 from utils.logger import initLogging
+import utils.files as uf
 
 def feeds_to_shows(feeds):
   return list(map(
@@ -34,6 +35,8 @@ def title_is_included(title, includes):
 initLogging()
 logger = logging.getLogger('tubular')
 
+uf.touch('data/')
+
 logger.info('Starting Tubular')
 logger.debug('Running on Python {}'.format(platform.python_version()))
 logger.debug('Log level set to {}'.format(logger.level))
@@ -41,10 +44,13 @@ config = config.load()
 
 feeds = youtube.crawl(youtube.manifest(config))
 available_shows = feeds_to_shows(feeds)
+# archived_shows = get_archived_shows()
 dl_manager = Downloader(available_shows)
 dl_manager.run()
+
+# open_show_from_file('data/')
 '''
-# open_show_from_file() # creates if file does not exist
+# open_show_from_file() # creates default if file does not exist
 dl_manager = Downloader(available_shows, archived_shows)
 new_episodes = dl_manager.run()
 add new episodes to archive

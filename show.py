@@ -47,3 +47,21 @@ class Show(object):
     episode_ids = set(self.episode_ids)
     new_episodes = episode_ids - previous_ids
     return self.get_episodes_by_id(list(new_episodes))
+
+
+def open_show_from_file(path):
+  default = {
+    'title': 'New Default Title',
+    'episodes': []
+  }
+
+  try:
+    data = uf.open_json_as_dict(path)
+  except Exception as e:
+    logger.warn('Error opening {}. Returning default'.format(path))
+    data = default
+
+  return Show(title=data['title'], episodes=data['episodes'])
+
+def get_archived_shows():
+  return
