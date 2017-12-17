@@ -27,7 +27,7 @@ class CrawlResponse(object):
 
   @property
   def title(self):
-    return self.__xml['feed']['title'] or 'Default title'
+    return self.__xml['feed']['title']
 
   @property
   def entries(self):
