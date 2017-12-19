@@ -26,7 +26,10 @@ config = config.load()
 
 feeds = youtube.crawl(youtube.manifest(config))
 available_shows = feeds_to_shows(feeds)
-# archived_shows = get_archived_shows()
+archived_shows = get_archived_shows()
+# new_episodes = shows_with_new_episodes(available_shows, archived_shows)
+print('available_shows', available_shows)
+print('archived_shows', archived_shows)
 dl_manager = Downloader(available_shows)
 dl_manager.run()
 
