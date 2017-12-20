@@ -33,7 +33,7 @@ class Downloader(object):
 
     def run(self):
         self.__empty_temp_dir()
-        for show in self.available_shows:
+        for _, show in self.available_shows.items():
             self.__download_episodes(show)
             self.__downloaded_ids += _ids_from_tmp_dir(self.__temp_dir)
         self.__write_last_run(self.__downloaded_ids)
