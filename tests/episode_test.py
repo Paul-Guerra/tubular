@@ -46,7 +46,5 @@ class TestEpisode(unittest.TestCase):
     self.assertRaises(AttributeError, lambda: ef.change_attr(a, 'video', 'new video'))
     self.assertRaises(AttributeError, lambda: ef.change_attr(a, 'thumbnail', 'new thumbnail'))
 
-
 if __name__ == '__main__':
-  print('hi', __name__)
   unittest.main()
