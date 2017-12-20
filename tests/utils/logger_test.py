@@ -76,5 +76,5 @@ class TestLogger(unittest.TestCase):
       utils.logger.initLoggingFromFile('path/to/file')
       mock_basicLogging.assert_called_once_with()
 
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+    unittest.main()
