@@ -20,7 +20,7 @@ class TestEpisode(unittest.TestCase):
     def test_equality(self):
         '''Equality is based on ids'''
         print(self.shortDescription())
-        
+
         a = Episode(ef.equality_data[0])
         b = Episode(ef.equality_data[1])
         c = Episode(ef.equality_data[2])
@@ -48,6 +48,18 @@ class TestEpisode(unittest.TestCase):
         self.assertRaises(AttributeError, lambda: ef.change_attr(a, 'video', 'new video'))
         self.assertRaises(AttributeError, lambda: ef.change_attr(a, 'thumbnail', 'new thumbnail'))
     
+    def test_property_values(self):
+        '''Properties set from dict'''
+        print(self.shortDescription())
+
+        e = Episode(ef.set_data[0])
+        self.assertEqual(ef.set_data[0]['id'], e.id)
+        self.assertEqual(ef.set_data[0]['title'], e.title)
+        self.assertEqual(ef.set_data[0]['web_page'], e.web_page)
+        self.assertEqual(ef.set_data[0]['description'], e.description)
+        self.assertEqual(ef.set_data[0]['thumbnail'], e.thumbnail)
+        self.assertEqual(ef.set_data[0]['video'], e.video)
+
     def test_parse_entry(self):
         '''Normalizes xmldict from feed'''
         print(self.shortDescription())
@@ -59,6 +71,7 @@ class TestEpisode(unittest.TestCase):
         self.assertEqual(entry['description'], 'description')
         self.assertEqual(entry['thumbnail'], 'thumbnail')
         self.assertEqual(entry['video'], 'video')
+        
 
 
 if __name__ == '__main__':
