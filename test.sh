@@ -2,9 +2,16 @@
 # python tests/episode_test.py
 # python -m unittest discover -p *_test.py
 
-# If this geta more complicated we can move this to a .coveragerc config file
+If this geta more complicated we can move this to a .coveragerc config file
 coverage run \
   --omit='.python_environment/*' \
   --source=. \
   -m unittest discover -p *_test.py 
 coverage report -m
+
+# run coverage but only test one file
+# coverage run \
+#   --omit='.python_environment/*' \
+#   --source=. \
+#     tests/episode_test.py 
+# coverage report -m
