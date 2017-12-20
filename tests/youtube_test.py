@@ -1,6 +1,7 @@
 import unittest
-import youtube
 from unittest.mock import patch, Mock
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import youtube
 
 
 class TestYouTube(unittest.TestCase):

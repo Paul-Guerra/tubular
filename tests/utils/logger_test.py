@@ -1,8 +1,10 @@
 import unittest
 import os
 import logging
-import utils.logger
 from unittest.mock import patch, mock_open
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import utils.logger
 
 jsonLoadResult = { 'loaded': True }
 
