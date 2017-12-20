@@ -1,4 +1,5 @@
 # /bin/bash
+# python tests/episode_test.py
 # python -m unittest discover -p *_test.py
 
 # If this geta more complicated we can move this to a .coveragerc config file
