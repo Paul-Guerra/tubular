@@ -58,5 +58,5 @@ class TestYouTube(unittest.TestCase):
     youtube.crawl(urls)
     mock_map.assert_called_with(mock_fetch, urls)
 
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+  unittest.main()

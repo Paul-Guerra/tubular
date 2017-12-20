@@ -1,10 +1,20 @@
 class Episode(object):
 
   def __init__(self, data):
-    self.__data = data
-    self.downloaded = False
-    self.uploaded = False
-    self.tmp_path = None
+    self.__data = dict(data)
+
+  def __hash__ (self):
+    return hash(self.id)
+
+  def __eq__ (self, other):
+    return hash(self.id) == hash(other.id)
+    
+  def __ne__ (self, other):
+    return not self.__eq__(other)
+
+  @property
+  def id(self):
+    return self.__data['id']
 
   @property
   def title(self):
@@ -26,9 +36,6 @@ class Episode(object):
   def thumbnail(self):
     return self.__data['thumbnail']
 
-  @property
-  def id(self):
-    return self.__data['id']
 
 def parse_entry(xmldict):
   '''
