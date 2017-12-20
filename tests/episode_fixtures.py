@@ -68,7 +68,18 @@ objref_data = {
     'description': 'objref_data_description_1',
     'video': 'objref_data_video_1',
     'thumbnail': 'objref_data_thumbnail_1',
-  }
+}
+
+xmldict = {
+    'yt:videoId': 'id',
+    'link': {'@href': 'web_page'},
+    'media:group': {
+        'media:title': 'title',
+        'media:description': 'description',
+        'media:thumbnail': {'@url': 'thumbnail'},
+        'media:content': {'@url': 'video'}
+    }
+}
 
 def change_attr(e, prop, value):
   setattr(e, prop, value)
