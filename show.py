@@ -80,8 +80,8 @@ def get_archived_shows(dir='data/'):
     '''Shows previously downloaded and published'''
 
     shows = {}
-    fileList = os.listdir(dir)
-    for f in fileList:
+    file_list = os.listdir(dir)
+    for f in file_list:
         show = open_show_from_file('{}/{}'.format(dir, f))
         if show is not None:
             shows[show.id] = show
@@ -130,7 +130,7 @@ def shows_with_new_episodes(available_shows, archived_shows):
     shows = {}
     for show in available_shows:
         episodes = new_episodes(show, archived_shows[show.id])
-        if count(episodes) > 0:
+        if len(episodes) > 0:
             shows[show.id] = Show(show.id, show.title, episodes)
 
     return shows
