@@ -95,23 +95,23 @@ def feeds_to_shows(feeds):
          shows[f.manifest_item.id] = Show(
              f.manifest_item.id,
              f.manifest_item.title,
-             get_episodes_from_entries(f)
+             get_episodes_from_entries(f.entries, f.manifest_item.include)
             )
 
     return shows
 
-def get_episodes_from_entries(feed_response):
+def get_episodes_from_entries(entries, includes):
     '''
     Return a list of episodes from the provided entries 
     that include one the specified "include" strings
     '''
 
-    entries_dict = list(map(parse_entry, feed_response.entries))
+    entries_dict = list(map(parse_entry, entries))
     episodes = list(map(Episode, entries_dict))
-    includes = list(map(
-        lambda i: i.lower(),
-        feed_response.manifest_item.include
-        ))
+    if not includes:
+        return episodes
+
+    includes = list(map(lambda i: i.lower(), includes))
     return list(filter(
         lambda e: title_is_included(e.title.lower(), includes),
         episodes
@@ -128,7 +128,7 @@ def shows_with_new_episodes(available_shows, archived_shows):
     '''Returns a dictionary of show ids that map to show object containing new episodes'''
     shows = {}
     for show in list(available_shows.values()):
-        episodes = new_episodes(show, archived_shows[show.id])
+        episodes = new_episodes(show, archived_shows)
         if episodes:
             shows[show.id] = Show(show.id, show.title, episodes)
 
@@ -143,4 +143,4 @@ def new_episodes(available_show, archived_shows):
         return available_show.episodes
     
     archived_show = archived_shows[available_show.id]
-    return set(available_show.episodes) - set(archived_show.episodes)
+    return list(set(available_show.episodes) - set(archived_show.episodes))
