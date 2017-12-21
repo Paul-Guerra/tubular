@@ -6,7 +6,6 @@ import os
 import logging
 import utils.files as uf
 from episode import Episode, parse_entry
-
 logger = logging.getLogger('tubular')
 
 class Show(object):
@@ -14,9 +13,9 @@ class Show(object):
     Class for a show object as populated from crawl responses
     '''
 
-    def __init__(self, id, title, episodes):
+    def __init__(self, show_id, title, episodes):
         self.title = title
-        self.__id = id
+        self.__id = show_id
         self.__episodes = episodes or []
         self.__episodes_by_id = {}
         self.__index_episodes(episodes)
@@ -33,7 +32,7 @@ class Show(object):
     @property
     def episodes(self):
         ''' Read-only access to episodes property'''
-        return self.__episodes
+        return list(self.__episodes)
 
     @property
     def downloaded_episodes(self):
@@ -46,7 +45,7 @@ class Show(object):
     @property
     def episodes_by_id(self):
         '''Returns a dictionary of episodes using their id as the key'''
-        return self.__episodes_by_id
+        return dict(self.__episodes_by_id)
 
     @property
     def episode_ids(self):
@@ -74,7 +73,7 @@ def open_show_from_file(path):
         logger.warn('Error opening {}. Returning "None"'.format(path))
         return None
 
-    return Show(id=data["id"], title=data['title'], episodes=data['episodes'])
+    return Show(show_id=data["id"], title=data['title'], episodes=data['episodes'])
 
 def get_archived_shows(dir='data/'):
     '''Shows previously downloaded and published'''
@@ -128,9 +127,9 @@ def title_is_included(title, includes):
 def shows_with_new_episodes(available_shows, archived_shows):
     '''Returns a dictionary of show ids that map to show object containing new episodes'''
     shows = {}
-    for show in available_shows:
+    for show in list(available_shows.values()):
         episodes = new_episodes(show, archived_shows[show.id])
-        if len(episodes) > 0:
+        if episodes:
             shows[show.id] = Show(show.id, show.title, episodes)
 
     return shows
@@ -141,6 +140,7 @@ def new_episodes(available_show, archived_shows):
     and return a list of new episodes (not in the archived show)
     '''
     if available_show.id not in archived_shows:
-        return available_show
+        return available_show.episodes
     
     archived_show = archived_shows[available_show.id]
+    return set(available_show.episodes) - set(archived_show.episodes)
