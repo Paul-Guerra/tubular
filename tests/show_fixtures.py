@@ -19,10 +19,11 @@ def episode_factory(prefix='', count=1, start=0):
         }))
     return episodes
 
-def show_factory(episodes, prefix='', count=1, start=0):
-    '''Returns a dictioanry of shows by id'''
+def show_factory(episode_data, prefix='', count=1, start=0):
+    '''Returns a dictionary of shows by id'''
     shows = {}
     for i in range(start, start + count):
+        episodes = episode_factory(**episode_data)
         show = Show(show_id=f'{prefix}{i}', title=f'{prefix}title_{i}', episodes=episodes)
         shows[show.id] = show
     return shows

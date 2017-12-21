@@ -13,10 +13,10 @@ class TestShow(unittest.TestCase):
         '''Return unarchived episodes of a show'''
         print(self.shortDescription())
 
-        archived_episodes = episode_factory('test_episode', count=3)
+        archived_episodes = {'prefix':'test_episode', 'count': 3}
         archived_shows = show_factory(archived_episodes, 'test_show')
 
-        available_episodes = episode_factory('test_episode', count=4)
+        available_episodes = {'prefix':'test_episode', 'count': 4}
         available_shows = show_factory(available_episodes, 'test_show')
         curr_show = list(available_shows.values())[0]
 
@@ -28,7 +28,7 @@ class TestShow(unittest.TestCase):
         '''Return all episodes of a new (unarchived) show'''
         print(self.shortDescription())
 
-        available_episodes = episode_factory('test_episode', count=4)
+        available_episodes = {'prefix':'test_episode', 'count': 4}        
         available_shows = show_factory(available_episodes, 'test_show')
         curr_show = list(available_shows.values())[0]
 
