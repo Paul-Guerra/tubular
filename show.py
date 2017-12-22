@@ -75,13 +75,13 @@ def open_show_from_file(path):
 
     return Show(show_id=data["id"], title=data['title'], episodes=data['episodes'])
 
-def get_archived_shows(dir='data/'):
+def get_archived_shows(path='data/'):
     '''Shows previously downloaded and published'''
 
     shows = {}
-    file_list = os.listdir(dir)
+    file_list = os.listdir(path)
     for f in file_list:
-        show = open_show_from_file('{}/{}'.format(dir, f))
+        show = open_show_from_file('{}/{}'.format(path, f))
         if show is not None:
             shows[show.id] = show
     return shows
@@ -89,14 +89,14 @@ def get_archived_shows(dir='data/'):
 
 def feeds_to_shows(feeds):
     '''Converts feeds data into a dictionary or show objects'''
-  
+
     shows = {}
-    for f in feeds:
-         shows[f.manifest_item.id] = Show(
-             f.manifest_item.id,
-             f.manifest_item.title,
-             get_episodes_from_entries(f.entries, f.manifest_item.include)
-            )
+    for f in list(feeds.values()):
+        shows[f.manifest_item.id] = Show(
+            f.manifest_item.id,
+            f.manifest_item.title,
+            get_episodes_from_entries(f.entries, f.manifest_item.include)
+        )
 
     return shows
 

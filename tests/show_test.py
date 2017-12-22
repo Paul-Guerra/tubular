@@ -1,17 +1,18 @@
 import os
 import sys
 import unittest
-from unittest.mock import patch, PropertyMock
-from show_fixtures import episode_factory, show_factory
+from unittest.mock import patch, Mock, PropertyMock
+
+from show_fixtures import (episode_factory, show_factory, init_half_false, inc_ids)
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import show
 from show import Show
 
-class TestShow(unittest.TestCase):
+class TestShowFunctions(unittest.TestCase):
 
     def test_new_episodes(self):
-        '''Return unarchived episodes of a show'''
+        '''Returns unarchived episodes of a show'''
         print(self.shortDescription())
 
         archived_episodes = {'prefix':'test_episode', 'count': 3}
@@ -27,7 +28,7 @@ class TestShow(unittest.TestCase):
         self.assertEqual(next(iter(new_episodes)).id, 'test_episode3')
 
     def test_new_show(self):
-        '''Return all episodes of a new (unarchived) show'''
+        '''Returns all episodes of a new (unarchived) show'''
         print(self.shortDescription())
 
         available_episodes = {'prefix':'test_episode', 'count': 4}        
@@ -80,7 +81,7 @@ class TestShow(unittest.TestCase):
         self.assertEqual(len(show_with_new_episode.keys()), 1, 'Should have one show with a new episode')
 
     def test_title_is_included(self):
-        '''return a boolen if the title string is in the includes array'''
+        '''Returns a boolen if the title string is in the includes array'''
         print(self.shortDescription())
         title = 'foo'
         has_foo = ['bar', 'foo', 'baz']
@@ -94,6 +95,8 @@ class TestShow(unittest.TestCase):
     @patch('show.parse_entry')
     def test_get_episodes_from_entries(self, mock_parse_entry, mock_Episode, mock_title, mock_title_included):
         '''Returns a list of episodes form the supplied entries'''
+        print(self.shortDescription())
+        
         entries = {'foo': 1, 'bar': 2}
         episodes = {'foo_episode': 1, 'bar_episode': 2}
         mock_parse_entry.return_value = episodes
@@ -114,18 +117,78 @@ class TestShow(unittest.TestCase):
             'Episodes should be returned when titles include check passes'
         )
 
-        mock_title_included.return_value = False
+        # Only report that one episode passes the include filter
+        mock_title_included.side_effect = [True, False] 
         output = show.get_episodes_from_entries(entries, ['foo'])
         self.assertEqual(
             len(output),
-            0, 
-            'No episodes should be returned when titles include check fails'
+            1, 
+            'Episodes should only be returned when titles include check passes'
         )
-        # mock_parse_entry.assert_called()
-        # self.assertTrue(mock_parse_entry.called)
-        # self.assertEqual(mock_parse_entry.call_count, 2)
+
+    @patch('show.get_episodes_from_entries', side_effect=lambda e, i: [])
+    @patch('show.Show', side_effect=lambda id, title, episodes: True)
+    @patch('crawl_response.CrawlResponse', autospec=True)
+    def test_feeds_to_shows(self, mock_CrawlResponse, mock_Show, *args):
+        '''Converts feeds to shows dictionary'''
+        print(self.shortDescription())
         
-        # self.assertTrue(True)
+        m1 = mock_CrawlResponse(response=Mock(), manifest_item=Mock())
+        m2 = mock_CrawlResponse(response=Mock(), manifest_item=Mock())
+        feeds = {
+            'foo': m1,
+            'bar': m2
+        }
+        output = show.feeds_to_shows(feeds)
+        self.assertEqual(type(output), dict, 'Returns a dictionary')
+        self.assertEqual(mock_Show.call_count, 2, 'Show is created for each feed')
+        # self.assertEqual(len(output.values()), 2, 'Returns a show for every feed')
+
+    @patch('os.listdir', return_value=[])
+    def test_empty_archive_directory(self, listdir):
+        '''Handles an empty directory'''
+        print(self.shortDescription())
+        
+        shows = show.get_archived_shows()
+        self.assertEqual(len(shows.keys()), 0, 'No shows returns if no files are in directory')
+
+    @patch('os.listdir', return_value=['a', 'b', 'c'])
+    @patch('show.open_show_from_file', side_effect=[Mock(id='x'), None, Mock(id='z')])
+    def test_archive_file_not_opened(self, *args):
+        '''Handles archived file open failing'''
+        print(self.shortDescription())
+        
+        shows = show.get_archived_shows()
+        self.assertEqual(len(shows.keys()), 2, 'Shows without files are not returned')
+    
+
+    @patch('os.listdir', return_value=['a'])
+    @patch('show.open_show_from_file')
+    def test_archive_file_custom_path(self, open_show_from_file, *args):
+        '''Accepts a custom path to the show files directory'''
+        print(self.shortDescription())
+        
+        show.get_archived_shows('custom/path')
+        open_show_from_file.assert_called_with('custom/path/a')
+
+    @patch('show.Show')
+    @patch('utils.files.open_json_as_dict', return_value={'id': 1, 'title': 2, 'episodes': 3})
+    def test_open_show_from_file(self, mock_open_json_as_dict, mock_Show):
+        '''Creates a Show object if file returns data'''
+        print(self.shortDescription())
+        
+        show.open_show_from_file('foo')
+        mock_Show.assert_called()
+    
+    @patch('show.logger.warn')
+    @patch('utils.files.open_json_as_dict', side_effect=OSError)
+    def test_open_show_from_file_fails(self, mock_open_json_as_dict, *args):
+        '''Handles failed file opens'''
+        print(self.shortDescription())
+        
+        output = show.open_show_from_file('foo')
+        self.assertTrue(output is None, 'Returns "None" if an exception occure')
+        
 
 if __name__ == '__main__':
     unittest.main()

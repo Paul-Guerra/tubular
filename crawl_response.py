@@ -5,8 +5,14 @@ class CrawlResponse(object):
     def __init__(self, response, manifest_item):
         if response is None:
             raise Exception('CrawlResponse requires a response object. "None" provided')
-        self.response = response
-        self.manifest_item = manifest_item
+        self.__response = response
+        self.__xml = xmltodict.parse(response.text)
+        self.__xml = xmltodict.parse(test_response)
+        self.__manifest_item = manifest_item
+
+    @property
+    def manifest_item(self):
+        return self.__manifest_item
 
     @property
     def response(self):

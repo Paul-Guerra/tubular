@@ -77,4 +77,4 @@ class TestLogger(unittest.TestCase):
             mock_basicLogging.assert_called_once_with()
 
 if __name__ == '__main__':
-        unittest.main()
+    unittest.main()

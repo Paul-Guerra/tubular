@@ -27,3 +27,26 @@ def show_factory(episode_data, prefix='', count=1, start=0):
         show = Show(show_id=f'{prefix}{i}', title=f'{prefix}title_{i}', episodes=episodes)
         shows[show.id] = show
     return shows
+
+def init_half_false():
+    '''Returns a function that returns false half the time (via generator)'''
+    hf = half_false()
+    return lambda title, includes: next(hf)
+
+
+def half_false():
+    '''Returns false half the time'''
+    i = 0
+    while True:
+        if i % 2 is 0:
+            yield True
+        else:
+            yield False
+        
+        i += 1
+
+def inc_ids(prefix=''):
+    ''' generates incrementing id strings '''
+    i = 0
+    while True:
+        yield f'{prefix}_{i}'
