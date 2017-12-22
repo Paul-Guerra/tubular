@@ -58,6 +58,21 @@ class Episode(object):
         '''URL to the episode thumbnail'''
         return self.__thumbnail
 
+    @property
+    def download_finished(self):
+        if 'status' in self.download_status:
+            return self.download_status['status'] == 'finished'
+        else:
+            return False
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'web_page': self.web_page,
+            'video': self.video,
+            'thumbnail': self.thumbnail,
+        }
 
 def parse_entry(xmldict):
     '''
