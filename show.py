@@ -3,6 +3,7 @@ Show class an related utility functions
 '''
 
 import os
+import json
 import logging
 import utils.files as uf
 from episode import Episode, parse_entry
@@ -34,6 +35,17 @@ class Show(object):
     def episodes(self):
         ''' Read-only access to episodes property'''
         return list(self.__episodes)
+    
+    def add_episodes(self, new_episodes):
+        '''Appends new episodes to the existing episodes'''
+        self.__episodes += new_episodes
+
+    def to_json(self):
+        return json.dumps({
+            'id': self.id,
+            'title': self.title,
+            'episodes': list(map(lambda e: e.to_dict(), self.episodes))
+        })
 
 def open_show_from_file(path):
     '''Return a show object using data stored in the file found at path'''
