@@ -2,14 +2,22 @@
 Episode class and related helper function, parse_entry, used for coverting data from the XML feed
 '''
 
+import json
+
 class Episode(object):
     '''
     An entry on a channel. All properties are immutable and based on a dict sent to the constructor
     '''
     def __init__(self, data):
-        self.__data = dict(data)
         super().__init__()
 
+        self.__id = data['id']
+        self.__title = data['title']
+        self.__web_page = data['web_page']
+        self.__description = data['description']
+        self.__video = data['video']
+        self.__thumbnail = data['thumbnail']
+        self.download_status = {}
 
     def __hash__(self):
         return hash(self.id)
@@ -22,33 +30,33 @@ class Episode(object):
 
     @property
     def id(self):
-        '''Id of episode. should match the video id from the feed'''
-        return self.__data['id']
+        '''Id of episode.'''
+        return self.__id
 
     @property
     def title(self):
-        '''Title of episode. Should match the Title from the feed'''
-        return self.__data['title']
+        '''Title of episode.'''
+        return self.__title
 
     @property
     def web_page(self):
         '''The URL the episode video can be viewed'''
-        return self.__data['web_page']
+        return self.__web_page
 
     @property
     def description(self):
         '''The episode description'''
-        return self.__data['description']
+        return self.__description
 
     @property
     def video(self):
         '''URL to the video file'''
-        return self.__data['video']
+        return self.__video
 
     @property
     def thumbnail(self):
         '''URL to the episode thumbnail'''
-        return self.__data['thumbnail']
+        return self.__thumbnail
 
 
 def parse_entry(xmldict):
