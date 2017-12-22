@@ -91,7 +91,7 @@ def feeds_to_shows(feeds):
     '''Converts feeds data into a dictionary or show objects'''
 
     shows = {}
-    for f in list(feeds.values()):
+    for f in feeds:
         shows[f.manifest_item.id] = Show(
             f.manifest_item.id,
             f.manifest_item.title,
