@@ -10,6 +10,8 @@ class Downloader(object):
     def __init__(self, available_shows):
         self.available_shows = available_shows
         self.__last_run_path = 'last_run.json'
+        super().__init__()
+
         self.__temp_dir = 'tmp/'
         self.__downloaded_ids = []
         self.init_dl_tracking()

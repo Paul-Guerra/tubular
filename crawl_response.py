@@ -3,6 +3,8 @@ import xmltodict
 class CrawlResponse(object):
 
     def __init__(self, response, manifest_item):
+        super().__init__()
+
         if response is None:
             raise Exception('CrawlResponse requires a response object. "None" provided')
         self.__response = response

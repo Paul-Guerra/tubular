@@ -15,6 +15,8 @@ class Show(object):
 
     def __init__(self, show_id, title, episodes):
         self.title = title
+        super().__init__()
+
         self.__id = show_id
         self.__episodes = episodes or []
         self.__episodes_by_id = {}

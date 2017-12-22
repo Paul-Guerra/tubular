@@ -8,6 +8,8 @@ class Episode(object):
     '''
     def __init__(self, data):
         self.__data = dict(data)
+        super().__init__()
+
 
     def __hash__(self):
         return hash(self.id)
