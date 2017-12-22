@@ -14,58 +14,26 @@ class Show(object):
     '''
 
     def __init__(self, show_id, title, episodes):
-        self.title = title
         super().__init__()
 
         self.__id = show_id
+        self.__title = title
         self.__episodes = episodes or []
-        self.__episodes_by_id = {}
-        self.__index_episodes(episodes)
 
-    def __index_episodes(self, episodes):
-        for e in episodes:
-            self.__episodes_by_id[e.id] = e
-    
     @property
     def id(self):
         '''Read-only id of the show'''
         return self.__id
 
     @property
+    def title(self):
+        '''Read-only title of the show'''
+        return self.__title
+
+    @property
     def episodes(self):
         ''' Read-only access to episodes property'''
         return list(self.__episodes)
-
-    @property
-    def downloaded_episodes(self):
-        '''Returns a list of episodes marked as downloaded'''
-        return list(filter(
-            lambda e: e.downloaded is True,
-            self.__episodes
-        ))
-
-    @property
-    def episodes_by_id(self):
-        '''Returns a dictionary of episodes using their id as the key'''
-        return dict(self.__episodes_by_id)
-
-    @property
-    def episode_ids(self):
-        '''Returns all episode ids'''
-        return dict.keys(self.episodes_by_id)
-
-    def get_episodes_by_id(self, ids):
-        return list(map(
-            lambda i: self.episodes_by_id[i],
-            ids
-        ))
-
-    def get_new_episodes(self, previous_episode_ids):
-        previous_ids = set(previous_episode_ids)
-        episode_ids = set(self.episode_ids)
-        new_episodes = episode_ids - previous_ids
-        return self.get_episodes_by_id(list(new_episodes))
-
 
 def open_show_from_file(path):
     '''Return a show object using data stored in the file found at path'''
