@@ -12,12 +12,14 @@ def open_json_as_dict(path=''):
     if os.path.exists(path):
         with open(path, 'r') as f:
             return json.load(f)
+            f.close()
     else:
         raise Exception('Path does not exist: "{}"'.format(path))
 
 def write_dict_as_json(obj, path):
-    with open(path, 'w') as fp:
-        json.dump(obj, fp)
+    with open(path, 'w') as f:
+        json.dump(obj, f)
+        f.close()
 
 def touch(path):
     dirname = ntpath.dirname(path)
