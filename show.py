@@ -40,12 +40,22 @@ class Show(object):
         '''Appends new episodes to the existing episodes'''
         self.__episodes += new_episodes
 
-    def to_json(self):
-        return json.dumps({
+    def to_dict(self):
+        return {
             'id': self.id,
             'title': self.title,
             'episodes': list(map(lambda e: e.to_dict(), self.episodes))
-        })
+        }
+
+def write_show_to_file(show, path):
+    if show is None:
+        return None
+
+    try:
+        uf.write_dict_as_json(show.to_dict(), path)
+    except Exception as e:
+        logger.warn('Error writing {}. Error: {}'.format(path, str(e)))
+        return None
 
 def open_show_from_file(path):
     '''Return a show object using data stored in the file found at path'''
