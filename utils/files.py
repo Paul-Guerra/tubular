@@ -6,6 +6,7 @@ import ntpath
 logger = logging.getLogger('tubular')
 
 def open_json_as_dict(path=''):
+    '''Opens a JSON file and converts it to a dictionary'''
     if path is '' or type(path) is not str:
         raise Exception('Bad path: "{}"'.format(path))
 
@@ -17,16 +18,27 @@ def open_json_as_dict(path=''):
         raise Exception('Path does not exist: "{}"'.format(path))
 
 def write_dict_as_json(obj, path):
+    '''Convert a dictionary to JSON and write to path'''
     with open(path, 'w') as f:
         json.dump(obj, f)
         f.close()
 
-def touch(path):
+def mkdir(path):
+    '''Creates folders if they dont exist'''
     dirname = ntpath.dirname(path)
-    file_name = ntpath.basename(path)
-    if not os.path.exists(path):
-        if len(dirname) > 0:
+    if not ntpath.exists(path):
+        if not dirname:
             os.makedirs(dirname)
-            
-        if len(file_name) > 0:
+
+def touch(path):
+    '''Creates a file and associated folders if it doesnt exist'''
+    mkdir(path)
+    file_name = ntpath.basename(path)
+    if not ntpath.exists(path):
+        if not file_name:
             open(path, 'w').close()
+
+def change_ext(path, ext):
+    '''Returns a string path with the extension swapped out'''
+    return os.path.splitext(path)[0] + '.mp3'
+
