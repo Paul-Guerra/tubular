@@ -49,15 +49,18 @@ class Downloader(object):
         }
 
     def download_episodes(self, episodes):
-            for e in episodes:
-                options = self.youtube_dl_options(e)
-                try:
-                    with youtube_dl.YoutubeDL(options) as ydl:
-                        logger.info('Initiating download for episode {}'.format(e))
-                        ydl.download([e.web_page])
-                except Exception as err:
-                    logger.exception(str(err))
-            return list(filter(lambda e: e.download_finished is True, episodes))
+        for e in episodes:
+            options = self.youtube_dl_options(e)
+            try:
+                with youtube_dl.YoutubeDL(options) as ydl:
+                    logger.info('Initiating download for episode %s (%s)', e.title, e.id)
+                    ydl.download([e.web_page])
+            except Exception as err:
+                logger.exception(str(err))
+        return list(filter(
+            lambda e: e.download_finished is True,
+            episodes)
+        )
         
     def __empty_temp_dir(self):
         logger.info('Emptying {}'.format(self.__temp_dir))
@@ -70,6 +73,6 @@ class Downloader(object):
 
 def on_download_update(episode, u):
     if u['status'] is 'finished':
-        logger.info('Download {}: Episode: "{}" ({})'.format(u['status'], episode.title, episode.id))
+        logger.info('Download %s: Episode: "%s" (%s)', u['status'], episode.title, episode.id)
         logger.info(f'Download Data: {u}')
         episode.download_status = u
