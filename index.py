@@ -5,17 +5,20 @@ import youtube
 from show import (
     feeds_to_shows,
     get_archived_shows,
-    shows_with_new_episodes
+    write_show_to_file,
+    shows_with_new_episodes,
+    archive_audio
 )
 from downloader import Downloader
 from utils.logger import initLogging
 import utils.files as uf
 
 def main():
+    data_dir = 'data/'
     initLogging()
     logger = logging.getLogger('tubular')
 
-    uf.touch('data/')
+    uf.touch(data_dir)
 
     logger.info('Starting Tubular')
     logger.debug('Running on Python {}'.format(platform.python_version()))
@@ -32,9 +35,9 @@ def main():
     downloaded_shows = dl_manager.run(has_new_episodes)
     add_new_episodes(downloaded_shows, archived_shows)
 
-    print('archived_shows', archived_shows)
-
-    print(downloaded_shows[0].to_json())
+    for show in archived_shows.values():
+        write_show_to_file(show, f'{data_dir}/{show.id}.json')
+        archive_audio(show, data_dir)
 
 def add_new_episodes(downloaded_shows, archived_shows):
     for show in downloaded_shows:
