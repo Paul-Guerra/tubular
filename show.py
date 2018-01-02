@@ -7,6 +7,7 @@ import json
 import logging
 import utils.files as uf
 from episode import Episode, parse_entry
+
 logger = logging.getLogger('tubular')
 
 class Show(object):
@@ -41,14 +42,22 @@ class Show(object):
         self.__episodes += new_episodes
 
     def to_dict(self):
+        '''Returns the show as a dictionary'''
         return {
             'id': self.id,
             'title': self.title,
             'episodes': list(map(lambda e: e.to_dict(), self.episodes))
         }
 
+    @staticmethod
+    def hydrate(show_dict):
+        '''Creates a new Shor object from a compaitible dictionary'''
+        episodes = [Episode(e) for e in show_dict['episodes']]
+        return Show(show_id=show_dict['id'], title=show_dict['title'], episodes=episodes)
+
 def write_show_to_file(show, path):
-    if show is None:
+    '''Writes a show to a file at the given path in JSON'''
+    if not show:
         return None
 
     try:
@@ -59,23 +68,27 @@ def write_show_to_file(show, path):
 
 def open_show_from_file(path):
     '''Return a show object using data stored in the file found at path'''
-    try:
-        data = uf.open_json_as_dict(path)
-    except Exception as e:
-        logger.warn('Error opening {}. Returning "None"'.format(path))
+    if not path:
         return None
 
-    return Show(show_id=data["id"], title=data['title'], episodes=data['episodes'])
+    try:
+        data = uf.open_json_as_dict(path)
+        return Show.hydrate(data)
+    except Exception as e:
+        logger.warn('Error opening {}. Error: {}'.format(path, str(e)))
+        return None
+
 
 def get_archived_shows(path='data/'):
-    '''Shows previously downloaded and published'''
+    '''Returns dictionary of shows previously downloaded'''
 
     shows = {}
-    file_list = os.listdir(path)
+    file_list = list(filter(lambda f: os.path.isfile(f'{path}{f}'), os.listdir(path)))
     for f in file_list:
-        show = open_show_from_file('{}/{}'.format(path, f))
+        show = open_show_from_file('{}{}'.format(path, f))
         if show is not None:
             shows[show.id] = show
+
     return shows
 
 
@@ -136,3 +149,8 @@ def new_episodes(available_show, archived_shows):
     
     archived_show = archived_shows[available_show.id]
     return list(set(available_show.episodes) - set(archived_show.episodes))
+
+def archive_audio(show, data_dir) :
+    '''Moves audio files from given temp directory to archive directory'''
+    for e in show.episodes:
+        e.archive_audio(f'{data_dir}/{e.id}.json') 
