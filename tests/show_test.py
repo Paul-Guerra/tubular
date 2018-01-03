@@ -3,9 +3,9 @@ import sys
 import unittest
 from unittest.mock import patch, Mock, PropertyMock
 
-from show_fixtures import (episode_factory, show_factory, init_half_false, inc_ids)
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from show_fixtures import (episode_factory, show_factory, init_half_false, inc_ids)
 import show
 from show import Show
 
