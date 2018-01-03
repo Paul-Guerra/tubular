@@ -12,6 +12,5 @@
 # run coverage but only test one file
 coverage run \
   --omit='.python_environment/*' \
-  --source=. \
-    tests/show_test.py 
+  --source= tests/utils/files_test.py
 coverage report -m

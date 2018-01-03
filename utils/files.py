@@ -19,26 +19,30 @@ def open_json_as_dict(path=''):
 
 def write_dict_as_json(obj, path):
     '''Convert a dictionary to JSON and write to path'''
-    with open(path, 'w') as f:
-        json.dump(obj, f)
-        f.close()
+    file_handler = open(path, 'w')
+    json.dump(obj, file_handler)
+    file_handler.close()
 
 def mkdir(path):
     '''Creates folders if they dont exist'''
     dirname = ntpath.dirname(path)
     if not ntpath.exists(path):
-        if not dirname:
+        if dirname:
             os.makedirs(dirname)
+            return True
+    return False
 
 def touch(path):
     '''Creates a file and associated folders if it doesnt exist'''
-    mkdir(path)
-    file_name = ntpath.basename(path)
     if not ntpath.exists(path):
-        if not file_name:
+        mkdir(path)
+        file_name = ntpath.basename(path)
+        if file_name:
             open(path, 'w').close()
+            return True
+    return False
 
 def change_ext(path, ext):
     '''Returns a string path with the extension swapped out'''
-    return os.path.splitext(path)[0] + '.mp3'
+    return os.path.splitext(path)[0] + ext
 
