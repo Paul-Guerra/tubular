@@ -7,15 +7,13 @@ logger = logging.getLogger('tubular')
 
 def open_json_as_dict(path=''):
     '''Opens a JSON file and converts it to a dictionary'''
-    if path is '' or type(path) is not str:
-        raise Exception('Bad path: "{}"'.format(path))
-
     if os.path.exists(path):
         with open(path, 'r') as f:
-            return json.load(f)
+            data = json.load(f)
             f.close()
-    else:
-        raise Exception('Path does not exist: "{}"'.format(path))
+            return data
+    return False
+
 
 def write_dict_as_json(obj, path):
     '''Convert a dictionary to JSON and write to path'''
