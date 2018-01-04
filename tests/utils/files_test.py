@@ -68,24 +68,22 @@ class TestUtilsFiles(unittest.TestCase):
         path = 'foo/bar/file.ext'
         output = uf.mkdir(path)
         self.assertFalse(output)
-    
+
     @patch('json.dump')    
-    @patch('utils.files.open')    
-    def test_write_dict_as_json(self, file_open, json_dump):
+    def test_write_dict_as_json(self, json_dump):
         '''Writes dict as JSON file'''
         print(self.shortDescription())
-        mock_file = Mock()
-        file_open.return_value = mock_file
+
         obj = {'foo': 'bar'}
         path = 'baz.json'
 
-        uf.write_dict_as_json(obj, path)
-
-        file_open.assert_called_once_with(path, 'w')
-        json_dump.assert_called_once_with(obj, mock_file)
-        mock_file.close.assert_called_once()
-
-
+        opener = mock_open()        
+        with patch('utils.files.open', opener) as mo:
+            uf.write_dict_as_json(obj, path)
+            mo.assert_called_once_with(path, 'w')
+            handle = mo()
+            handle.close.assert_called_once()
+            json_dump.assert_called_once_with(obj, handle)
 
 if __name__ == '__main__':
     unittest.main()

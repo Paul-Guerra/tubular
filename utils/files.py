@@ -19,9 +19,9 @@ def open_json_as_dict(path=''):
 
 def write_dict_as_json(obj, path):
     '''Convert a dictionary to JSON and write to path'''
-    file_handler = open(path, 'w')
-    json.dump(obj, file_handler)
-    file_handler.close()
+    with open(path, 'w') as f:
+        json.dump(obj, f)
+        f.close()
 
 def mkdir(path):
     '''Creates folders if they dont exist'''
