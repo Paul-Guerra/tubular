@@ -9,9 +9,9 @@ import utils.files as uf
 class TestUtilsFiles(unittest.TestCase):  
     def test_change_ext(self):
         '''Changes file extension for a given path string '''
-        print(self.shortDescription())        
+        print(self.shortDescription())
         self.assertEqual(uf.change_ext('/foo/bo.o/bar.baz', '.que'), '/foo/bo.o/bar.que')
-    
+
     @patch('ntpath.exists', return_value=True)
     def test_touch_exists(self, exists):
         '''Does nothing if the path exists'''
@@ -59,7 +59,7 @@ class TestUtilsFiles(unittest.TestCase):
         dirname.assert_called_once_with(path)
         makedirs.assert_called_once_with('foo/bar')
         self.assertTrue(output)
-    
+
     @patch('ntpath.exists', return_value=True)
     def test_mkdir_exists(self, exists):
         '''Returns False if the directory exists'''
@@ -68,7 +68,7 @@ class TestUtilsFiles(unittest.TestCase):
         output = uf.mkdir(path)
         self.assertFalse(output)
 
-    @patch('json.dump')    
+    @patch('json.dump')
     def test_write_dict_as_json(self, json_dump):
         '''Writes dict as JSON file'''
         print(self.shortDescription())
@@ -76,7 +76,7 @@ class TestUtilsFiles(unittest.TestCase):
         obj = {'foo': 'bar'}
         path = 'baz.json'
 
-        opener = mock_open()        
+        opener = mock_open()
         with patch('utils.files.open', opener) as mo:
             uf.write_dict_as_json(obj, path)
             mo.assert_called_once_with(path, 'w')
@@ -84,14 +84,14 @@ class TestUtilsFiles(unittest.TestCase):
             handle.close.assert_called_once()
             json_dump.assert_called_once_with(obj, handle)
 
-    @patch('os.path.exists', return_value=True)    
-    @patch('json.load', return_value={'foo': 'bar'})    
+    @patch('os.path.exists', return_value=True)
+    @patch('json.load', return_value={'foo': 'bar'})
     def test_open_json_as_dict(self, json_load, path_exists):
         '''Open dict as JSON file'''
         print(self.shortDescription())
 
         path = 'baz.json'
-        opener = mock_open()        
+        opener = mock_open()
         with patch('utils.files.open', opener) as mo:
             output = uf.open_json_as_dict(path)
             mo.assert_called_once_with(path, 'r')
@@ -101,13 +101,13 @@ class TestUtilsFiles(unittest.TestCase):
             self.assertEqual(output, json_load.return_value, 'Returns dict from json.load')
 
 
-    @patch('os.path.exists', return_value=False)    
+    @patch('os.path.exists', return_value=False)
     def test_open_json_as_dict_bad_path(self, path_exists):
         '''Handles bad paths'''
         print(self.shortDescription())
 
         path = 'baz.json'
-        opener = mock_open()        
+        opener = mock_open()
         with patch('utils.files.open', opener) as mo:
             output = uf.open_json_as_dict(path)
             self.assertFalse(output, 'Returns False if the path does not exist')
