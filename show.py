@@ -152,5 +152,10 @@ def new_episodes(available_show, archived_shows):
 
 def archive_audio(show, data_dir) :
     '''Moves audio files from given temp directory to archive directory'''
-    for e in show.episodes:
-        e.archive_audio(f'{data_dir}/{e.id}.json') 
+    try:
+        dir_path = f'{data_dir}{show.id}/'
+        uf.mkdir(dir_path)
+        for e in show.episodes:
+            e.archive_audio(f'{dir_path}{e.id}.mp3') 
+    except (OSError, IOError) as err:
+        logger.exception(str(err))

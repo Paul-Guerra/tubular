@@ -1,4 +1,5 @@
 import os
+import sys
 import ntpath
 import logging
 import youtube_dl
@@ -15,9 +16,9 @@ class Downloader(object):
         try:
             if not os.path.exists(self.__temp_dir):
                 os.makedirs(self.__temp_dir)
-        except Exception as e:
-            logger.exception(str(e))
-            exit()
+        except (OSError, IOError) as err:
+            logger.exception(str(err))
+            sys.exit(1)
 
     def run(self, new_shows):
         downloaded_shows = []
@@ -38,7 +39,7 @@ class Downloader(object):
             'ffmpeg_location': '/usr/local/bin/ffmpeg',
             'nocheckcertificate': True,
             'keepvideo': False,
-            'outtmpl': '{dir}%(id)s.%(ext)s'.format(dir=self.__temp_dir),
+            'outtmpl': '{dir}%(id)s'.format(dir=self.__temp_dir),
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',

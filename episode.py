@@ -92,7 +92,7 @@ class Episode(object):
     
     def archive_audio(self, dest):
         try:
-            # logger.info(f'Archving Episode {self.audio_path}')
+            logger.info(f'Archving Episode {self.audio_path} to {dest}')
             os.rename(self.audio_path, dest)
             self.__audio_path = dest
         except OSError as err:
