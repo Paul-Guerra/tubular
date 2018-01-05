@@ -14,11 +14,13 @@ from utils.logger import initLogging
 import utils.files as uf
 
 def main():
-    data_dir = 'data/'
     initLogging()
     logger = logging.getLogger('tubular')
 
+    data_dir = 'data/'
+    audio_dir = 'data/audio/'
     uf.touch(data_dir)
+    uf.touch(audio_dir)
 
     logger.info('Starting Tubular')
     logger.debug(f'Running on Python {platform.python_version()}')
@@ -40,8 +42,8 @@ def main():
     add_new_episodes(downloaded_shows, archived_shows)
 
     for show in archived_shows.values():
+        archive_audio(show, audio_dir)
         write_show_to_file(show, f'{data_dir}/{show.id}.json')
-        archive_audio(show, data_dir)
 
 def add_new_episodes(downloaded_shows, archived_shows):
     for show in downloaded_shows:
