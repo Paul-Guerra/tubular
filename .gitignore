@@ -103,3 +103,4 @@ ENV/
 .python_environment
 tmp/
 last_run.json
+data/
