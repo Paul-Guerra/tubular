@@ -100,7 +100,5 @@ ENV/
 # mypy
 .mypy_cache/
 
-.python_environment
 tmp/
-last_run.json
 data/
