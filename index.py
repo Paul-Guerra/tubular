@@ -21,8 +21,8 @@ def main():
     uf.touch(data_dir)
 
     logger.info('Starting Tubular')
-    logger.debug('Running on Python {}'.format(platform.python_version()))
-    logger.debug('Log level set to {}'.format(logger.level))
+    logger.debug(f'Running on Python {platform.python_version()}')
+    logger.debug(f'Log level set to {logger.level}')
     config = load_config()
 
     feeds = youtube.crawl(youtube.manifest(config))
@@ -30,6 +30,10 @@ def main():
     archived_shows = get_archived_shows()
 
     has_new_episodes = shows_with_new_episodes(available_shows, archived_shows)
+
+    if len(has_new_episodes.keys()) is 0:
+        logger.info('No New episodes found. Exiting')
+        return
 
     dl_manager = Downloader()
     downloaded_shows = dl_manager.run(has_new_episodes)
