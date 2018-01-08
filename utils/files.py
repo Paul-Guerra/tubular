@@ -26,7 +26,7 @@ def mkdir(path):
     dirname = ntpath.dirname(path)
     if not ntpath.exists(path):
         if dirname:
-            os.makedirs(dirname)
+            os.makedirs(dirname, exist_ok=True)
             return True
     return False
 
@@ -44,3 +44,6 @@ def change_ext(path, ext):
     '''Returns a string path with the extension swapped out'''
     return os.path.splitext(path)[0] + ext
 
+def is_json_file(path):
+    '''Test if the file path is a json file'''
+    return os.path.isfile(path) and path[-5:] == '.json'

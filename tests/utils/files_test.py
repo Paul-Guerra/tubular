@@ -57,7 +57,7 @@ class TestUtilsFiles(unittest.TestCase):
         path = 'foo/bar/file.ext'
         output = uf.mkdir(path)
         dirname.assert_called_once_with(path)
-        makedirs.assert_called_once_with('foo/bar')
+        makedirs.assert_called_once_with('foo/bar', exist_ok=True)
         self.assertTrue(output)
 
     @patch('ntpath.exists', return_value=True)
@@ -111,6 +111,19 @@ class TestUtilsFiles(unittest.TestCase):
         with patch('utils.files.open', opener) as mo:
             output = uf.open_json_as_dict(path)
             self.assertFalse(output, 'Returns False if the path does not exist')
+
+
+    @patch('os.path.isfile', return_value=True)
+    def test_is_json_file(self, path_is_file):
+        '''Detects JSON files from path'''
+        print(self.shortDescription())
+
+        json_path = 'foo/bar/baz.json'
+        not_json_path = 'foo/bar/baz.yaml'
+        self.assertTrue(uf.is_json_file(json_path), 'True if is file and name ends in ".json"')
+        self.assertFalse(uf.is_json_file(not_json_path), 'False if extension is not ".json"')
+        path_is_file.return_value = False
+        self.assertFalse(uf.is_json_file(json_path), 'False if path does not point to file')
 
 if __name__ == '__main__':
     unittest.main()
