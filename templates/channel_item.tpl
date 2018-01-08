@@ -16,11 +16,11 @@
     </itunes:summary>
     <itunes:image href="$thumbnail"/>
     <itunes:duration>$length_seconds</itunes:duration>
-    <itunes:explicit>no</itunes:explicit>
+    <itunes:explicit>yes</itunes:explicit>
     <content:encoded>
         <![CDATA[
             $description
         ]]>
     </content:encoded>
-    <enclosure url="$audio_url" length="$$length_bytes" type="audio/mpeg"/>
+    <enclosure url="$audio_url" length="$length_bytes" type="audio/mpeg"/>
 </item>
