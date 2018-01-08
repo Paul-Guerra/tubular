@@ -83,9 +83,11 @@ def get_archived_shows(path='data/'):
     '''Returns dictionary of shows previously downloaded'''
 
     shows = {}
-    file_list = list(filter(lambda f: os.path.isfile(f'{path}{f}'), os.listdir(path)))
+    file_list = list(filter(
+        lambda f: uf.is_json_file(f'{path}{f}'), os.listdir(path)
+    ))
     for f in file_list:
-        show = open_show_from_file('{}{}'.format(path, f))
+        show = open_show_from_file(f'{path}{f}')
         if show is not None:
             shows[show.id] = show
 
