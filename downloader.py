@@ -7,6 +7,8 @@ from show import Show
 
 logger = logging.getLogger('tubular')
 
+AUDIO_QUALITY = '128'
+
 class Downloader(object):
 
     def __init__(self):
@@ -43,7 +45,7 @@ class Downloader(object):
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
-                'preferredquality': '128',
+                'preferredquality': AUDIO_QUALITY,
             }],
             'logger': logger,
             'progress_hooks': [lambda u: on_download_update(episode, u)]

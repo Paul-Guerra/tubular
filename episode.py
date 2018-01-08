@@ -21,6 +21,7 @@ class Episode(object):
         self.__description = data['description']
         self.__video = data['video']
         self.__thumbnail = data['thumbnail']
+        self.__date = data['date']
         self.__audio_path = data['audio_path'] if 'audio_path' in data else ''
         self.__download_status = {}
 
@@ -64,6 +65,11 @@ class Episode(object):
         return self.__thumbnail
     
     @property
+    def date(self):
+        '''Date of the episode'''
+        return self.__date
+    
+    @property
     def download_status(self):
         '''Return the download status object'''
         return self.__download_status
@@ -103,6 +109,7 @@ class Episode(object):
         return {
             'id': self.id,
             'title': self.title,
+            'date': self.date,
             'web_page': self.web_page,
             'description': self.description,
             'video': self.video,
@@ -118,6 +125,7 @@ def parse_entry(xmldict):
     return {
         'id': xmldict['yt:videoId'],
         'title': xmldict['media:group']['media:title'],
+        'date': xmldict['updated'],
         'web_page': xmldict['link']['@href'],
         'description': xmldict['media:group']['media:description'],
         'thumbnail': xmldict['media:group']['media:thumbnail']['@url'],

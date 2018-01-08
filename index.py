@@ -17,19 +17,17 @@ def main():
     initLogging()
     logger = logging.getLogger('tubular')
 
-    data_dir = 'data/'
-    audio_dir = 'data/audio/'
-    uf.touch(data_dir)
-    uf.touch(audio_dir)
-
     logger.info('Starting Tubular')
     logger.debug(f'Running on Python {platform.python_version()}')
     logger.debug(f'Log level set to {logger.level}')
     config = load_config()
 
+    uf.touch(config['data_dir'])
+    uf.touch(config['audio_dir'])
+
     feeds = youtube.crawl(youtube.manifest(config))
     available_shows = feeds_to_shows(feeds)
-    archived_shows = get_archived_shows()
+    archived_shows = get_archived_shows(config['data_dir'])
 
     has_new_episodes = shows_with_new_episodes(available_shows, archived_shows)
 

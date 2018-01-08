@@ -19,6 +19,8 @@
         "Jim Norton and Sam Roberts"
       ]
     }
-  ]
-
+  ],
+  "data_dir": "data/",
+  "audio_dir": "data/audio/",
+  "podcast_dir": "data/podcast/"
 }
