@@ -12,8 +12,8 @@ class TestEpisode(unittest.TestCase):
         '''Supports set operations'''
         print(self.shortDescription())
 
-        a = { Episode(ef.set_data[0]), Episode(ef.set_data[1]) }
-        b = { Episode(ef.set_data[0]) }
+        a = {Episode(ef.set_data[0]), Episode(ef.set_data[1])}
+        b = {Episode(ef.set_data[0])}
         c = a - b
         self.assertEqual(next(iter(c)).id, ef.set_data[1]['id'])
 
@@ -52,13 +52,30 @@ class TestEpisode(unittest.TestCase):
         '''Properties set from dict'''
         print(self.shortDescription())
 
-        e = Episode(ef.set_data[0])
-        self.assertEqual(ef.set_data[0]['id'], e.id)
-        self.assertEqual(ef.set_data[0]['title'], e.title)
-        self.assertEqual(ef.set_data[0]['web_page'], e.web_page)
-        self.assertEqual(ef.set_data[0]['description'], e.description)
-        self.assertEqual(ef.set_data[0]['thumbnail'], e.thumbnail)
-        self.assertEqual(ef.set_data[0]['video'], e.video)
+        e = Episode(ef.init_data)
+        self.assertEqual(ef.init_data['id'], e.id)
+        self.assertEqual(ef.init_data['title'], e.title)
+        self.assertEqual(ef.init_data['web_page'], e.web_page)
+        self.assertEqual(ef.init_data['description'], e.description)
+        self.assertEqual(ef.init_data['thumbnail'], e.thumbnail)
+        self.assertEqual(ef.init_data['video'], e.video)
+        self.assertEqual(ef.init_data['audio_path'], e.audio_path)
+        self.assertEqual(ef.init_data['date'], e.date)
+        self.assertEqual(e.download_status, {})
+
+
+    @patch('episode.change_ext', return_value='foo.mp3')
+    def test_update_dl_status(self, change_ext):
+        '''Sets download_status audio path'''
+        print(self.shortDescription())
+
+        e = Episode(ef.init_data)
+        status_update = {'filename':'foo'}
+        e.download_status = status_update
+        self.assertEqual(e.download_status, status_update, 'Updates download_status property')
+        change_ext.assert_called_once_with(status_update['filename'], '.mp3')
+        self.assertEqual(e.audio_path, 'foo.mp3', 'Updates audio_path property')
+        
 
     def test_parse_entry(self):
         '''Normalizes xmldict from feed'''
@@ -72,6 +89,42 @@ class TestEpisode(unittest.TestCase):
         self.assertEqual(entry['thumbnail'], 'thumbnail')
         self.assertEqual(entry['video'], 'video')
         
+    def test_download_finished(self):
+        '''Reports if download is finished'''
+        print(self.shortDescription())
+
+        e = Episode(ef.init_no_audio_path)
+        self.assertFalse(e.download_finished, 'False if status and audio path is not set')
+        status_update = {'status': 'finished'}
+        e.download_status = status_update
+        self.assertTrue(e.download_finished, 'True if status is finished')
+        
+        e = Episode(ef.init_with_audio_path)
+        self.assertTrue(e.download_finished, 'True if audio_path is set')
+
+    @patch('episode.logger')
+    @patch('os.rename')
+    def test_archive_audio(self, rename, logger):
+        '''Archive audio files'''
+        print(self.shortDescription())
+
+        e = Episode(ef.init_with_audio_path)
+        dest = 'foo/bar.mp3'
+        e.archive_audio(dest)
+        rename.assert_called_once_with(ef.init_with_audio_path['audio_path'], dest)
+
+        rename.side_effect = OSError('oops')
+        e.archive_audio(dest)
+        logger.exception.assert_called_once_with('oops')
+
+    def test_to_dict(self):
+        '''Converts to a dictionary'''
+        print(self.shortDescription())
+
+        e = Episode(ef.init_with_audio_path)
+        output = e.to_dict()
+        self.assertTrue(isinstance(output, dict))
+        self.assertDictEqual(output, ef.init_with_audio_path)
 
 
 if __name__ == '__main__':

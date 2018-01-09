@@ -63,12 +63,12 @@ class Episode(object):
     def thumbnail(self):
         '''URL to the episode thumbnail'''
         return self.__thumbnail
-    
+
     @property
     def date(self):
         '''Date of the episode'''
         return self.__date
-    
+
     @property
     def download_status(self):
         '''Return the download status object'''

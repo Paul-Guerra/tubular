@@ -1,3 +1,35 @@
+init_data = {
+    'id': 1,
+    'title': 'title_1',
+    'web_page': 'web_page_1',
+    'description': 'description_1',
+    'video': 'video_1',
+    'thumbnail': 'thumbnail_1',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz1.mp3'
+}
+
+init_no_audio_path = {
+    'id': 1,
+    'title': 'title_1',
+    'web_page': 'web_page_1',
+    'description': 'description_1',
+    'video': 'video_1',
+    'thumbnail': 'thumbnail_1',
+    'date': 'the date'
+}
+
+init_with_audio_path = {
+    'id': 1,
+    'title': 'title_1',
+    'web_page': 'web_page_1',
+    'description': 'description_1',
+    'video': 'video_1',
+    'thumbnail': 'thumbnail_1',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz1.mp3'
+}
+
 set_data = [
   {
     'id': 1,
@@ -6,6 +38,8 @@ set_data = [
     'description': 'description_1',
     'video': 'video_1',
     'thumbnail': 'thumbnail_1',
+    'date': 'the date',    
+    'audio_path': 'foo/bar/baz1.mp3'
   },
   {
     'id': 2,
@@ -14,6 +48,8 @@ set_data = [
     'description': 'description_2',
     'video': 'video_2',
     'thumbnail': 'thumbnail_2',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz2.mp3'
   },
   {
     'id': 3,
@@ -22,6 +58,8 @@ set_data = [
     'description': 'description_3',
     'video': 'video_3',
     'thumbnail': 'thumbnail_3',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz3.mp3'
   },
 
   {
@@ -31,6 +69,8 @@ set_data = [
     'description': 'description_4',
     'video': 'video_4',
     'thumbnail': 'thumbnail_4',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz4.mp3'
   }
 ]
 
@@ -42,6 +82,8 @@ equality_data = [
     'description': 'description_1',
     'video': 'video_1',
     'thumbnail': 'thumbnail_1',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz1.mp3'
   },
   {
     'id': 1,
@@ -49,7 +91,9 @@ equality_data = [
     'web_page': 'web_page_2',
     'description': 'description_2',
     'video': 'video_2',
-    'thumbnail': 'thumbnail_2'
+    'thumbnail': 'thumbnail_2',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz2.mp3'
   }, 
   {
     'id': 3,
@@ -57,7 +101,9 @@ equality_data = [
     'web_page': 'web_page_2',
     'description': 'description_2',
     'video': 'video_2',
-    'thumbnail': 'thumbnail_2'
+    'thumbnail': 'thumbnail_2',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz2.mp3'
   }, 
 ]
 
@@ -68,11 +114,14 @@ objref_data = {
     'description': 'objref_data_description_1',
     'video': 'objref_data_video_1',
     'thumbnail': 'objref_data_thumbnail_1',
+    'date': 'the date',
+    'audio_path': 'foo/bar/baz1.mp3'
 }
 
 xmldict = {
     'yt:videoId': 'id',
     'link': {'@href': 'web_page'},
+    'updated': 'the date',
     'media:group': {
         'media:title': 'title',
         'media:description': 'description',
