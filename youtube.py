@@ -14,7 +14,7 @@ def fetch(item):
         logger.info('Making request to {}'.format(url))
         response = requests.get(url, timeout=5)
         if response.status_code is not 200:
-            logger.warn('Received non 200 response code for {}. Status Code:{}'.format(url, response.status_code))
+            logger.warning('Received non 200 response code for {}. Status Code:{}'.format(url, response.status_code))
             return None
         return CrawlResponse(response, item)
     except Exception:

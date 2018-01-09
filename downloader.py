@@ -72,7 +72,7 @@ class Downloader(object):
             for fileName in fileList:
                 os.remove(self.__temp_dir + '/' + fileName)
         except OSError as e:
-            logger.warn('Cannot empty {}. Error: {}'.format(self.__temp_dir, e))
+            logger.warning('Cannot empty {}. Error: {}'.format(self.__temp_dir, e))
 
 def on_download_update(episode, u):
     if u['status'] is 'finished':

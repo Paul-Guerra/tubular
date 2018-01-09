@@ -63,7 +63,7 @@ def write_show_to_file(show, path):
     try:
         uf.write_dict_as_json(show.to_dict(), path)
     except Exception as e:
-        logger.warn('Error writing {}. Error: {}'.format(path, str(e)))
+        logger.warning('Error writing {}. Error: {}'.format(path, str(e)))
         return None
 
 def open_show_from_file(path):
@@ -75,7 +75,7 @@ def open_show_from_file(path):
         data = uf.open_json_as_dict(path)
         return Show.hydrate(data)
     except Exception as e:
-        logger.warn('Error opening {}. Error: {}'.format(path, str(e)))
+        logger.warning('Error opening {}. Error: {}'.format(path, str(e)))
         return None
 
 
