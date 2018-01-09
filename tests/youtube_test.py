@@ -40,8 +40,9 @@ class TestYouTube(unittest.TestCase):
         self.assertEqual(type(output), list)
         self.assertEqual(manifest_item.call_count, len(config['channels']), 'Creates a ManifestItem for each channel in config')
 
+    @patch('youtube.logger')
     @patch('requests.get')
-    def test_fetchURL(self, mock_get):
+    def test_fetchURL(self, mock_get, logger):
         '''youtube::fetch makes request to URL'''
         print(self.shortDescription())
 
@@ -49,6 +50,7 @@ class TestYouTube(unittest.TestCase):
         item = Mock(url='foo')
         data = youtube.fetch(item)
         mock_get.assert_called_with('foo', timeout=5)
+        logger.warning.assert_called()
 
     @patch('youtube.CrawlResponse', return_value='CrawlResponse')
     @patch('requests.get')
