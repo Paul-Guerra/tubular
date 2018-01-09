@@ -11,5 +11,5 @@
   "python.unitTest.promptToConfigure": false,
   "python.unitTest.pyTestEnabled": false,
   "python.unitTest.nosetestsEnabled": false,
-  "python.pythonPath": "${workspaceRoot}/.python_environment/bin/python"
+"python.pythonPath": "${workspaceFolder}/.venv/bin/python3"
 }
