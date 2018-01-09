@@ -18,12 +18,19 @@ def fetch(item):
             return None
         return CrawlResponse(response, item)
     except Exception:
-        logger.exception('Error fetching response: {}'.format(url))
+        logger.exception(f'Error fetching response: {url}')
 
 
 def manifest(config):
     if config is None:
         return False
+
+    if 'youtube' not in config:
+        return False
+
+    if 'user_url' not in config['youtube']:
+        return False
+
     items = []
     for chan in config['channels']:
         items.append(ManifestItem(chan, config['youtube']['user_url']))
