@@ -12,6 +12,7 @@ from show import (
 from downloader import Downloader
 from utils.logger import initLogging
 import utils.files as uf
+from podcast import publish
 
 def main():
     initLogging()
@@ -40,8 +41,9 @@ def main():
     add_new_episodes(downloaded_shows, archived_shows)
 
     for show in archived_shows.values():
-        archive_audio(show, audio_dir)
-        write_show_to_file(show, f'{data_dir}/{show.id}.json')
+        archive_audio(show, config['audio_dir'])
+        write_show_to_file(show, f'{config["data_dir"]}/{show.id}.json')
+        publish(show, config['podcast_dir'])
 
 def add_new_episodes(downloaded_shows, archived_shows):
     for show in downloaded_shows:
