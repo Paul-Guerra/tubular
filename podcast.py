@@ -64,15 +64,15 @@ def channel_view(show):
     return channel
 
 def items_view(show):
-    items = ''
+    items = []
     try:
         episodes_by_date = sorted(show.episodes, key=lambda e: e.date)
         with open('templates/channel_item.tpl', 'r') as f:
+            tpl = Template(f.read())
             for episode in episodes_by_date:
-                tpl = Template(f.read())
                 length_bytes = getsize(episode.audio_path)
                 length_seconds = int(length_bytes * .008 / int(kbps))
-                items += tpl.substitute(
+                items.append(tpl.substitute(
                     id=escape(episode.id),
                     title=escape(episode.title),
                     pubdate=episode.date,
@@ -80,18 +80,17 @@ def items_view(show):
                     description=escape(episode.description),
                     thumbnail=episode.thumbnail if show.episodes else '',
                     length_bytes=length_bytes,
-                    length_seconds=length_seconds,
-                )
+                    length_seconds=length_seconds
+                ))
     except (OSError, IOError, TypeError, ValueError) as err:
         logger.exception(str(err))
     finally:
         f.close()
 
-    return items
+    return str().join(items)
 
 
 
 archived_shows = list(get_archived_shows().values())
-# id, show = archived_shows
 publish(archived_shows[0], load_config()['podcast_dir'])
 
