@@ -3,11 +3,11 @@ Convert youtube feeds into podcasts
 
 ### Setting up your environment
 ```bash
-python -m venv .python_environment
+python -m venv .venv
 ```
 ### Activating Environments
 ````bash
-source .python_environment/bin/activate
+source .venv/bin/activate
 ````
 
 ### Install modules

@@ -9,7 +9,7 @@ class CrawlResponse(object):
             raise Exception('CrawlResponse requires a response object. "None" provided')
         self.__response = response
         self.__xml = xmltodict.parse(response.text)
-        self.__xml = xmltodict.parse(test_response)
+        # self.__xml = xmltodict.parse(test_response)
         self.__manifest_item = manifest_item
 
     @property
@@ -22,8 +22,8 @@ class CrawlResponse(object):
 
     @response.setter
     def response(self, response):
-        # self.__xml = xmltodict.parse(response.text)
-        self.__xml = xmltodict.parse(test_response)
+        self.__xml = xmltodict.parse(response.text)
+        # self.__xml = xmltodict.parse(test_response)
 
     @property
     def xml(self):
