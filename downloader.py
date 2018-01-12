@@ -38,7 +38,7 @@ class Downloader(object):
     def youtube_dl_options(self, episode):
         # todo: see if option allows skipping the video download
         return {
-            'ffmpeg_location': '/usr/local/bin/ffmpeg',
+            # 'ffmpeg_location': '/usr/local/bin/ffmpeg',
             'nocheckcertificate': True,
             'keepvideo': False,
             'outtmpl': '{dir}%(id)s'.format(dir=self.__temp_dir),
