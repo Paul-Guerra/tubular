@@ -91,6 +91,7 @@ def items_view(show):
 
 
 
-archived_shows = list(get_archived_shows().values())
-publish(archived_shows[0], load_config()['podcast_dir'])
+# archived_shows = list(get_archived_shows().values())
+# if archived_shows:
+#     publish(archived_shows[0], load_config()['podcast_dir'])
 
