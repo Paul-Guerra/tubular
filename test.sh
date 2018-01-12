@@ -12,5 +12,5 @@
 # run coverage but only test one file
 coverage run \
   --omit='.venv/*' \
-  --source= tests/youtube_test.py
+  --source=tests/youtube_test.py
 coverage report -m
