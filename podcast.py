@@ -66,7 +66,7 @@ def channel_view(show):
 def items_view(show):
     items = []
     try:
-        episodes_by_date = sorted(show.episodes, key=lambda e: e.date)
+        episodes_by_date = sorted(show.episodes, key=lambda e: e.date, reverse=True)
         with open('templates/channel_item.tpl', 'r') as f:
             tpl = Template(f.read())
             for episode in episodes_by_date:
