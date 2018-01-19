@@ -47,3 +47,10 @@ def change_ext(path, ext):
 def is_json_file(path):
     '''Test if the file path is a json file'''
     return os.path.isfile(path) and path[-5:] == '.json'
+
+
+def file_and_parent(path):
+    '''For a given path return the filename and name of the parent directory'''
+    folder, file_name = ntpath.split(path)
+    _, parent = ntpath.split(folder)
+    return (file_name, parent)

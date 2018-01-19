@@ -5,7 +5,7 @@ import episode_fixtures as ef
 from unittest.mock import patch, mock_open
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from episode import Episode, parse_entry
+from episode import Episode, parse_entry, audio_path_to_url
 
 class TestEpisode(unittest.TestCase):  
     def test_set_operations(self):
@@ -125,6 +125,17 @@ class TestEpisode(unittest.TestCase):
         output = e.to_dict()
         self.assertTrue(isinstance(output, dict))
         self.assertDictEqual(output, ef.init_with_audio_path)
+    
+    @patch('episode.file_and_parent', return_value=('file_name', 'parent'))
+    def test_audio_path_url(self, file_and_parent):
+        '''Converts a local audio path to url'''
+        path = 'path'
+        url_base = 'url_base/'
+        self.assertEqual(
+            audio_path_to_url(path, url_base),
+            f'url_base/parent/file_name',
+            'Concatenates url base with file and parent directory'
+            )
 
 
 if __name__ == '__main__':

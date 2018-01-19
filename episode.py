@@ -4,7 +4,7 @@ Episode class and related helper function, parse_entry, used for coverting data 
 import os
 import json
 import logging
-from utils.files import mkdir, change_ext
+from utils.files import mkdir, change_ext, file_and_parent
 
 logger = logging.getLogger('tubular')
 
@@ -131,3 +131,7 @@ def parse_entry(xmldict):
         'thumbnail': xmldict['media:group']['media:thumbnail']['@url'],
         'video': xmldict['media:group']['media:content']['@url'],
     }
+
+def audio_path_to_url(path, url_base):
+    file_name, parent = file_and_parent(path)
+    return f'{url_base}{parent}/{file_name}'

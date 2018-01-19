@@ -125,5 +125,10 @@ class TestUtilsFiles(unittest.TestCase):
         path_is_file.return_value = False
         self.assertFalse(uf.is_json_file(json_path), 'False if path does not point to file')
 
+    @patch('ntpath.split', side_effect=[('folder', 'file_name'), ('_', 'parent')])
+    def test_file_and_parent(self, split):
+        result = uf.file_and_parent('path')
+        self.assertTupleEqual(result, ('parent', 'file_name'))
+
 if __name__ == '__main__':
     unittest.main()

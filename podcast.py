@@ -9,6 +9,7 @@ from utils.files import mkdir
 from show import get_archived_shows
 from downloader import AUDIO_QUALITY as kbps
 from config import load as load_config
+from episode import audio_path_to_url
 
 logger = logging.getLogger('tubular')
 
@@ -25,8 +26,9 @@ def publish(show, podcast_dir):
         f.close()
 
 def show_as_podcast(show):
+    base_audio_url = load_config()['base_audio_url']
     channel = channel_view(show)
-    items = items_view(show)
+    items = items_view(show, base_audio_url)
     return rss_view(channel, items)
 
 def rss_view(channel_data, items):
@@ -63,7 +65,7 @@ def channel_view(show):
 
     return channel
 
-def items_view(show):
+def items_view(show, base_audio_url):
     items = []
     try:
         episodes_by_date = sorted(show.episodes, key=lambda e: e.date, reverse=True)
@@ -76,7 +78,7 @@ def items_view(show):
                     id=escape(episode.id),
                     title=escape(episode.title),
                     pubdate=episode.date,
-                    audio_url=episode.audio_path,
+                    audio_url=audio_path_to_url(episode.audio_path, base_audio_url),
                     description=escape(episode.description),
                     thumbnail=episode.thumbnail if show.episodes else '',
                     length_bytes=length_bytes,
@@ -90,8 +92,7 @@ def items_view(show):
     return str().join(items)
 
 
-
-# archived_shows = list(get_archived_shows().values())
-# if archived_shows:
-#     publish(archived_shows[0], load_config()['podcast_dir'])
-
+if __name__ == '__main__':
+    archived_shows = list(get_archived_shows().values())
+    if archived_shows:
+        publish(archived_shows[0], load_config()['podcast_dir'])
