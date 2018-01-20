@@ -25,7 +25,6 @@ class Downloader(object):
     def run(self, new_shows):
         downloaded_shows = []
 
-        self.__empty_temp_dir()
         for _, show in new_shows.items():
             new_episodes = self.download_episodes(show.episodes)
             if new_episodes:
