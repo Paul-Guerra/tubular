@@ -1,5 +1,5 @@
 <title>$title</title>
-<link> $link </link>
+<link></link>
 <description>
     <![CDATA[
         $description
@@ -15,5 +15,4 @@
 <image>
     <url>$thumbnail</url>
     <title>$title</title>
-    <link>$link</link>
 </image>

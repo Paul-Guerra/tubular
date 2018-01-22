@@ -53,7 +53,6 @@ def channel_view(show):
             tpl = Template(f.read())
             channel =  tpl.substitute(
                 title=escape(show.title),
-                link='http://placeholder',
                 description='',
                 thumbnail=show.episodes[0].thumbnail if show.episodes else ''
             )
