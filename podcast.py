@@ -1,5 +1,5 @@
 '''
-Functionality around publishing archived show data as a podcast
+Functionality around writing archived show data as a podcast
 '''
 import logging
 from string import Template
@@ -13,13 +13,12 @@ from episode import audio_path_to_url
 
 logger = logging.getLogger('tubular')
 
-def publish(show, podcast_dir):
+def write(show, podcast_dir):
     try:
         mkdir(podcast_dir)
         content = show_as_podcast(show)
         with open(f'{podcast_dir}{show.id}.xml', 'w') as f:
             f.write(content)
-            f.close()
     except (OSError, IOError) as err:
         logger.exception(str(err))
     finally:
