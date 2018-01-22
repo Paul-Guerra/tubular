@@ -93,5 +93,5 @@ def items_view(show, base_audio_url):
 
 if __name__ == '__main__':
     archived_shows = list(get_archived_shows().values())
-    if archived_shows:
-        publish(archived_shows[0], load_config()['podcast_dir'])
+    for show in archived_shows:
+      write(show, load_config()['podcast_dir'])
