@@ -3,7 +3,6 @@ Show class an related utility functions
 '''
 
 import os
-import json
 import logging
 import utils.files as uf
 from episode import Episode, parse_entry
@@ -51,7 +50,7 @@ class Show(object):
 
     @staticmethod
     def hydrate(show_dict):
-        '''Creates a new Shor object from a compaitible dictionary'''
+        '''Creates a new Show object from a compaitible dictionary'''
         episodes = [Episode(e) for e in show_dict['episodes']]
         return Show(show_id=show_dict['id'], title=show_dict['title'], episodes=episodes)
 
