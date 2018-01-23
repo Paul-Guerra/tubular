@@ -39,19 +39,30 @@ def main():
     dl_manager = Downloader()
     downloaded_shows = dl_manager.run(has_new_episodes)
     add_new_episodes(downloaded_shows, archived_shows)
+    write_archive(archived_shows, config)
 
+def write_archive(archived_shows, config):
+    logger = logging.getLogger('tubular')    
     for show in archived_shows.values():
+        logger.info(f'Archiving audio files for {show.id}')
         archive_audio(show, config['audio_dir'])
+        logger.info(f'Archiving metadata for {show.id}')
         write_show_to_file(show, f'{config["data_dir"]}/{show.id}.json')
+        logger.info(f'writing podcast data for {show.id}')
         podcast.write(show, config['podcast_dir'])
 
 def add_new_episodes(downloaded_shows, archived_shows):
+    logger = logging.getLogger('tubular')    
     for show in downloaded_shows:
         if show.id not in archived_shows:
+            logger.info('Adding new show to archive')
             archived_shows[show.id] = show
         else:
+            logger.info(f'Adding {len(show.episodes)} new episodes to {show.id}')
             archive = archived_shows[show.id]
             archive.add_new_episodes(show.episodes)
 
-
-main()
+# main()
+config = load_config()
+archived_shows = get_archived_shows(config['data_dir'])
+write_archive(archived_shows, config)
