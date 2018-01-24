@@ -49,7 +49,7 @@ def write_archive(archived_shows, config):
         logger.info(f'Archiving audio files for {show.id}')
         archive_audio(show, config['audio_dir'])
         logger.info(f'Archiving metadata for {show.id}')
-        write_show_to_file(show, f'{config["data_dir"]}/{show.id}.json')
+        write_show_to_file(show, f'{config["data_dir"]}{show.id}.json')
         logger.info(f'writing podcast data for {show.id}')
         podcast.write(show, config['podcast_dir'])
 
