@@ -60,6 +60,7 @@ def write_show_to_file(show, path):
         return None
 
     try:
+        logger.info(f'Writing show json to {path}')
         uf.write_dict_as_json(show.to_dict(), path)
     except Exception as e:
         logger.warning('Error writing {}. Error: {}'.format(path, str(e)))

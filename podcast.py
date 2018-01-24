@@ -18,6 +18,8 @@ def write(show, podcast_dir):
         mkdir(podcast_dir)
         content = show_as_podcast(show)
         with open(f'{podcast_dir}{show.id}.xml', 'w') as f:
+            logger.info(f'Writing show podcast to {podcast_dir}{show.id}.xml')
+
             f.write(content)
     except (OSError, IOError) as err:
         logger.exception(str(err))

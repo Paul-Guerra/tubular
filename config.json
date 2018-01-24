@@ -22,6 +22,6 @@
   ],
   "data_dir": "data/",
   "audio_dir": "data/audio/",
-  "podcast_dir": "data/podcast/",
+  "podcast_dir": "data/",
   "base_audio_url": "http://www.paulrguerra.com/podcasts/audio/"
 }
