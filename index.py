@@ -64,9 +64,9 @@ def add_new_episodes(downloaded_shows, archived_shows):
             archive = archived_shows[show.id]
             archive.add_new_episodes(show.episodes)
 
-# main()
+main()
 
-initLogging()
-config = load_config()
-archived_shows = get_archived_shows(config['data_dir'])
-write_archive(archived_shows, config)
+# initLogging()
+# config = load_config()
+# archived_shows = get_archived_shows(config['data_dir'])
+# write_archive(archived_shows, config)
