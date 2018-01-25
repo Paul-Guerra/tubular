@@ -125,7 +125,7 @@ def parse_entry(xmldict):
     return {
         'id': xmldict['yt:videoId'],
         'title': xmldict['media:group']['media:title'],
-        'date': xmldict['updated'],
+        'date': xmldict['published'],
         'web_page': xmldict['link']['@href'],
         'description': xmldict['media:group']['media:description'],
         'thumbnail': xmldict['media:group']['media:thumbnail']['@url'],
