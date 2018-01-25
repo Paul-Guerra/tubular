@@ -128,7 +128,7 @@ class TestUtilsFiles(unittest.TestCase):
     @patch('ntpath.split', side_effect=[('folder', 'file_name'), ('_', 'parent')])
     def test_file_and_parent(self, split):
         result = uf.file_and_parent('path')
-        self.assertTupleEqual(result, ('parent', 'file_name'))
+        self.assertTupleEqual(result, ('file_name', 'parent'))
 
 if __name__ == '__main__':
     unittest.main()

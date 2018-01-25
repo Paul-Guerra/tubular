@@ -121,7 +121,7 @@ objref_data = {
 xmldict = {
     'yt:videoId': 'id',
     'link': {'@href': 'web_page'},
-    'updated': 'the date',
+    'published': 'the date',
     'media:group': {
         'media:title': 'title',
         'media:description': 'description',
