@@ -62,7 +62,7 @@ def add_new_episodes(downloaded_shows, archived_shows):
         else:
             logger.info(f'Adding {len(show.episodes)} new episodes to {show.id}')
             archive = archived_shows[show.id]
-            archive.add_new_episodes(show.episodes)
+            archive.add_episodes(show.episodes)
 
 main()
 
