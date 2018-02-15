@@ -1,30 +1,14 @@
-# tubular
-Convert youtube feeds into podcasts
+````
+# container start
+./start.sh
 
-### Setting up your environment
-```bash
-python -m venv .venv
-```
-### Activating Environments
-````bash
-source .venv/bin/activate
+# docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.6
+
+# connect from host
+mysql -u root -h 127.0.0.1
 ````
 
-### Install modules
-````bash
-pip install requests
-
-# save to requirements.txt
-pip freeze > requirements.txt
+## Running Tests
 ````
-
-if you need to install all the required modules for an existing project
-````bash
-pip install -r requirements.txt
-````
-
-
-### Deactivating Environments
-````bash
-deactivate
+env PYTHONPATH=$PYTHONPATH:$(pwd)/tubular python tests/crawl_test.py
 ````

@@ -1,0 +1,4 @@
+#! /bin/bash
+
+pip install -r requirements.edge.txt --upgrade
+pip freeze > requirements.txt
