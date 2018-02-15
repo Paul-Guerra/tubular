@@ -3,7 +3,6 @@ import sys
 import unittest
 import logging
 from unittest.mock import patch, mock_open
-
 import utils.logger
 
 jsonLoadResult = { 'loaded': True }

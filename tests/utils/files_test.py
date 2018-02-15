@@ -2,7 +2,6 @@ import os
 import sys
 import unittest
 from unittest.mock import patch, mock_open, Mock, MagicMock
-
 import utils.files as uf
 
 class TestUtilsFiles(unittest.TestCase):  
