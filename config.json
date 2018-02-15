@@ -1,0 +1,27 @@
+{
+  "youtube": {
+    "user_url": "https://www.youtube.com/feeds/videos.xml?user="
+  },
+  "channels":[
+    {
+      "title": "Sample",
+      "user": "user_name"
+    },
+    {
+      "title": "The Jim and Sam Show",
+      "user": "StrayFromTheMorale",
+      "include": [
+        "Jim & Sam",
+        "Jim &amp; Sam",
+        "Jim and Sam",
+        "Jim Norton & Sam Roberts",
+        "Jim Norton &amp; Sam Roberts",
+        "Jim Norton and Sam Roberts"
+      ]
+    }
+  ],
+  "data_dir": "data/",
+  "audio_dir": "data/audio/",
+  "podcast_dir": "data/",
+  "base_audio_url": "http://www.paulrguerra.com/podcasts/audio/"
+}
