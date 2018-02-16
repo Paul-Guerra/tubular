@@ -27,6 +27,7 @@ mysql --login-path=tubular
 
 
 Initilize migrations
+Edit alembic.ini to use the correct db DSN for the sqlalchemy url then run 
 ````
 alembic upgrade head
 ````
