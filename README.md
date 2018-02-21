@@ -33,5 +33,5 @@ alembic upgrade head
 ````
 ## Running Tests
 ````
-env PYTHONPATH=$PYTHONPATH:$(pwd)/tubular python tests/crawl_test.py
+env PYTHONPATH=$PYTHONPATH:$(pwd)/tubular python tests/crawler/crawl_test.py
 ````
