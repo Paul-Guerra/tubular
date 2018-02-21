@@ -11,15 +11,15 @@ async def fetch(url):
     
     return response
 
-async def crawl(loop, manifest):
+async def fetch_urls(loop, manifest):
     tasks = [loop.create_task(fetch(url)) for url in manifest]
     await asyncio.wait(tasks)
     return [task.result() for task in tasks]
         
 
-def main(manifest):
+def get(manifest):
     loop = asyncio.get_event_loop()
-    results = loop.run_until_complete(crawl(loop, manifest))
+    results = loop.run_until_complete(fetch_urls(loop, manifest))
     loop.close()
 
 if __name__ == '__main__':
@@ -29,6 +29,6 @@ if __name__ == '__main__':
         'http://google.com',
         'http://duckduckgo.com'
     ]
-    main(manifest)
+    get(manifest)
     end = time.time()
     print(f'total time {end - start}')

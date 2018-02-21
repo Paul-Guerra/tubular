@@ -4,8 +4,7 @@ import unittest
 from unittest.mock import patch, Mock, MagicMock
 import asyncio
 
-# sys.path.insert(0, f'{os.path.dirname(os.path.dirname(os.path.abspath(__file__)))}/tubular')
-import crawl
+import crawler.crawl as crawl
 
 def async_mock(*args, **kwargs):
     m = MagicMock(*args, **kwargs)
@@ -18,25 +17,25 @@ def async_mock(*args, **kwargs):
 
 class CrawlTest(unittest.TestCase):
 
-    @patch('crawl.crawl')
+    @patch('crawler.crawl.fetch_urls')
     @patch('asyncio.get_event_loop')
-    def test_main(self, get_event_loop, m_crawl):
+    def test_get(self, get_event_loop, m_fetch_urls):
         m_loop = Mock()
         get_event_loop.return_value = m_loop
         manifest = ['url1', 'url2']
 
-        crawl.main(manifest)
+        crawl.get(manifest)
 
         self.assertTrue(get_event_loop.called, 'Starts an asyncio event loop')
-        m_crawl.assert_called_with(m_loop, manifest)
+        m_fetch_urls.assert_called_with(m_loop, manifest)
         self.assertTrue(m_loop.close.called, 'Waits for loop to end')
 
-    @patch('crawl.fetch', new_callable=async_mock)
-    def test_crawl(self, m_fetch):
+    @patch('crawler.crawl.fetch', new_callable=async_mock)
+    def test_fetch_urls(self, m_fetch):
         manifest = ['url1', 'url2']    
         loop = asyncio.new_event_loop()
-        results = loop.run_until_complete(crawl.crawl(loop, manifest))
-        # loop.close()
+        results = loop.run_until_complete(crawl.fetch_urls(loop, manifest))
+        loop.close()
 
         self.assertEqual(m_fetch.mock.call_count, 2, 'Called fetch twice')
         self.assertEqual(len(results), 2, 'Returned 2 results')
@@ -64,4 +63,4 @@ class CrawlTest(unittest.TestCase):
         self.assertEqual(result, None, 'Returns None if error')
 
 if __name__ == '__main__':
-  unittest.main()
+    unittest.main()
