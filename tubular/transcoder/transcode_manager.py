@@ -2,7 +2,7 @@
 import os
 from multiprocessing import Process, Pipe
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from transcoder import transcode
+from .transcoder import transcode
 
 workers = []
 
