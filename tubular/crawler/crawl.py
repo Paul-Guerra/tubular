@@ -9,27 +9,27 @@ async def fetch(url):
     except Exception:
         return None
     
-    return response
+    return {'url': url, 'response': response}
 
 async def fetch_urls(loop, manifest):
     tasks = [loop.create_task(fetch(url)) for url in manifest]
     await asyncio.wait(tasks)
     return [task.result() for task in tasks]
         
-
 def get(manifest):
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(fetch_urls(loop, manifest))
+    responses = loop.run_until_complete(fetch_urls(loop, manifest))
     loop.close()
+    return responses
+
+def post_responses(url, responses):
+    requests.post(url, data={'responses': responses})
+    return
 
 if __name__ == '__main__':
     start = time.time()
-    manifest = [
-        'http://paulrguerra.com',
-        'http://google.com',
-        'http://duckduckgo.com'
-    ]
     app_config = config.load()
-    get(app_config['crawler']['manifest'])
+    responses = get(app_config['crawler']['manifest'])
+    post_responses(app_config['data_store']['ip'], responses)
     end = time.time()
     print(f'total time {end - start}')

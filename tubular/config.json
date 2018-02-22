@@ -1,9 +1,12 @@
 {
-    "crawler": { "manifest": [
-        "https://www.youtube.com/feeds/videos.xml?user=username"
+    "crawler": { 
+        "manifest": [
+            "https://www.youtube.com/feeds/videos.xml?user=username"
         ]
     },
-
+    "data_store": {
+        "ip": "http://127.0.0.1"
+    },
     "shows": [
         {
             "title": "The Foo and Bar Show",
