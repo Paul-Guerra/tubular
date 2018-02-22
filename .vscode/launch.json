@@ -9,16 +9,14 @@
       "type": "python",
       "request": "launch",
       "stopOnEntry": false,
-      // "pythonPath": "${config:python.pythonPath}",
       "pythonPath": "${workspaceRoot}/.venv/bin/python3",
       "program": "${file}",
-    //   "program": "${workspaceRoot}/index.py",
       "cwd": "${workspaceRoot}",
-      "env": {},
+      "env": {
+          "PYTHONPATH": "${workspaceRoot}/tubular"
+      },
       "envFile": "${workspaceRoot}/.env",
       "debugOptions": [
-        "WaitOnAbnormalExit",
-        "WaitOnNormalExit",
         "RedirectOutput"
       ]
     },
