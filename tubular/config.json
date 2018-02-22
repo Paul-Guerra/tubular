@@ -1,17 +1,16 @@
 {
-    "urls": [
+    "crawler": { "manifest": [
         "https://www.youtube.com/feeds/videos.xml?user=username"
-    ],
-    "channels": [
+        ]
+    },
+
+    "shows": [
         {
-            "title": "The Jim and Sam Show",
+            "title": "The Foo and Bar Show",
             "include": [
-                "Jim & Sam",
-                "Jim &amp; Sam",
-                "Jim and Sam",
-                "Jim Norton & Sam Roberts",
-                "Jim Norton &amp; Sam Roberts",
-                "Jim Norton and Sam Roberts"
+                "Foo & Bar",
+                "Foo &amp; Bar",
+                "Foo and Bar"
             ]
         }
     ],

@@ -1,7 +1,7 @@
 import asyncio
-import random
 import time
 import requests
+import config
 
 async def fetch(url):
     try:
@@ -19,7 +19,7 @@ async def fetch_urls(loop, manifest):
 
 def get(manifest):
     loop = asyncio.get_event_loop()
-    results = loop.run_until_complete(fetch_urls(loop, manifest))
+    loop.run_until_complete(fetch_urls(loop, manifest))
     loop.close()
 
 if __name__ == '__main__':
@@ -29,6 +29,7 @@ if __name__ == '__main__':
         'http://google.com',
         'http://duckduckgo.com'
     ]
-    get(manifest)
+    app_config = config.load()
+    get(app_config['crawler']['manifest'])
     end = time.time()
     print(f'total time {end - start}')

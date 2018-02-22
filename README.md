@@ -25,3 +25,8 @@ alembic upgrade head
 ````
 env PYTHONPATH=$PYTHONPATH:$(pwd)/tubular python tests/crawler/crawl_test.py
 ````
+
+## Executing a service
+````
+env PYTHONPATH=$PYTHONPATH:$(pwd)/tubular python tubular/crawler/crawl.py
+````
