@@ -1,9 +1,12 @@
 
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
+@app.route("/crawl_results")
+def crawl_results():
+    if request.method == "POST":
+        # crawl.post_results()
+        print(request)
     return "Hello World!"
 
 
