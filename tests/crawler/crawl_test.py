@@ -41,16 +41,17 @@ class CrawlTest(unittest.TestCase):
         self.assertEqual(len(results), 2, 'Returned 2 results')
 
     @patch('requests.get')
-    def test_fetch(self, m_get):
+    def test_fetch(self, requests_get):
         url = 'url'
         m_response = Mock()
-        m_get.return_value = m_response
+        requests_get.return_value = m_response
         loop = asyncio.new_event_loop()
         result = loop.run_until_complete(crawl.fetch(url))
         loop.close()
 
-        m_get.assert_called_with(url, timeout=5)
-        self.assertIs(result, m_response, 'Returns response from get()')
+        requests_get.assert_called_with(url, timeout=5)
+        self.assertIs(result['url'], url, 'Returns formated result with url')
+        self.assertIs(result['response'], m_response, 'Returns formated result with response')
 
 
     @patch('requests.get', side_effect=Exception('oops'))
