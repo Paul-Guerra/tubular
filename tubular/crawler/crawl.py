@@ -8,14 +8,14 @@ async def fetch(url):
         response = requests.get(url, timeout=5)
     except Exception:
         return None
-    
+
     return {'url': url, 'response': response}
 
 async def fetch_urls(loop, manifest):
     tasks = [loop.create_task(fetch(url)) for url in manifest]
     await asyncio.wait(tasks)
     return [task.result() for task in tasks]
-        
+
 def get(manifest):
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(fetch_urls(loop, manifest))

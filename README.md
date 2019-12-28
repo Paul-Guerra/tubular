@@ -1,3 +1,6 @@
+# Data service
+The data serves as the main repository for state across the system
+
 ````
 # container start
 ./start.sh
@@ -14,6 +17,12 @@ mysql_config_editor set --login-path=tubular --host=127.0.0.1 --user=tubular --p
 now you can connect from host via
 ````
 mysql --login-path=tubular
+````
+
+optionally, you can create an unencrypted .my.cnf file and leave it in your home directory. If you do so make sure permissions on the file are scoped to only the user who needs it. You can now login w/o the --login-path argument, like so
+
+````
+mysql -h 127.0.0.1
 ````
 
 Initilize migrations
