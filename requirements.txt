@@ -23,7 +23,7 @@ python-dateutil==2.6.1
 python-editor==1.0.3
 python-slugify==1.2.4
 python-termstyle==0.1.10
-requests==2.18.4
+requests==2.20.0
 rope==0.10.7
 six==1.11.0
 SQLAlchemy==1.2.2
