@@ -28,7 +28,7 @@ rope==0.10.7
 six==1.11.0
 SQLAlchemy==1.2.2
 Unidecode==1.0.22
-urllib3==1.22
+urllib3==1.26.5
 Werkzeug==0.14.1
 wrapt==1.10.11
 xmltodict==0.11.0
